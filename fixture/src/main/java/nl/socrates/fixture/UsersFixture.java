@@ -21,6 +21,7 @@ package nl.socrates.fixture;
 
 import org.joda.time.LocalDate;
 
+import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 import org.apache.isis.applib.value.Blob;
 
