@@ -4,6 +4,8 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
 
+import com.google.common.collect.ComparisonChain;
+
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
@@ -15,6 +17,8 @@ import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.value.Blob;
 
+import nl.socrates.dom.user.User;
+
 
 @javax.jdo.annotations.PersistenceCapable(
         identityType = IdentityType.DATASTORE)
@@ -24,7 +28,7 @@ import org.apache.isis.applib.value.Blob;
 @javax.jdo.annotations.Version(
         strategy = VersionStrategy.VERSION_NUMBER, column = "version")
 @Bookmarkable
-public class User extends AbstractDomainObject {
+public class User extends AbstractDomainObject implements Comparable<User>{
 
     public String title() {
         return String.format("%s (%s)", getFirstName(), getDateOfBirth().toString("dd-MM-yyyy"));
@@ -135,6 +139,14 @@ public class User extends AbstractDomainObject {
     @Named("Aangemeld op")
     public LocalDate getDateJoined() {
         return getJoinedOn().toLocalDate();
+    }
+
+    @Override
+    public int compareTo(User o) {
+        return ComparisonChain.start()
+        .compare(this.getFirstName(), o.getFirstName())
+        .compare(this.getDateOfBirth(), o.getDateOfBirth())
+        .result();
     }
     
     
