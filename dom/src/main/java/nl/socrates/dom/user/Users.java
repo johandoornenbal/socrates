@@ -24,20 +24,26 @@ public class Users extends AbstractFactoryAndRepository {
     }
 
     public User newUser(
+            @Optional @Named("Doopna(a)m(en)") String baptismalName,
             @Named("Voornaam") String firstName,
             @Optional @Named("tussen") String middleName,
             @Named("Achternaam") String lastName,
             @Named("Geboortedatum") LocalDate dateOfBirth,
+            @Named("Geboorteplaats") String placeOfBirth,
+            @Named("Nationaliteit") String Nationality,
             @Named("Geslacht") Sex sex,
             @Optional @Named("Foto") Blob picture
             ) {
         // create transient object (not persistent)
         User user = newTransientInstance(User.class);
         // set obect values
+        user.setBaptismalName(baptismalName);
         user.setFirstName(firstName);
         user.setMiddleName(middleName);
         user.setLastName(lastName);
         user.setDateOfBirth(dateOfBirth);
+        user.setPlaceOfBirth(placeOfBirth);
+        user.setNationality(Nationality);
         user.setSex(sex);
         user.setPicture(picture);
         user.setJoinedOn(clockService.nowAsLocalDateTime());

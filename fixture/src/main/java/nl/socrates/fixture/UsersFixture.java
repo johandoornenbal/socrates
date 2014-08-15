@@ -21,7 +21,6 @@ package nl.socrates.fixture;
 
 import org.joda.time.LocalDate;
 
-import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.fixturescripts.FixtureScript;
 import org.apache.isis.applib.value.Blob;
 
@@ -35,16 +34,16 @@ public class UsersFixture extends FixtureScript {
     protected void execute(ExecutionContext executionContext) {
 
         // create
-        create("Johan", "", "Doornenbal", new LocalDate(1962,7,16), Sex.MALE,  null);
-        create("Jeroen", "van der", "Wal", new LocalDate(1969,6,4), Sex.MALE,  null);
-        create("Henk", "", "Stormvogel", new LocalDate(1980,1,1), Sex.MALE,  null);
-        create("Inez", "", "Rippen", new LocalDate(1962,7,18), Sex.FEMALE,  null);
+        create("Johannes Tjerk Koenraad","Johan", "", "Doornenbal", new LocalDate(1962,7,16), "Leeuwarden", "Nederland", Sex.MALE,  null);
+        create(null, "Jeroen", "van der", "Wal", new LocalDate(1969,6,4),"Heerenveen", "Nederland", Sex.MALE,  null);
+        create(null, "Henk", "", "Stormvogel", new LocalDate(1980,1,1), "Bonn", "Duitsland", Sex.MALE,  null);
+        create("Alberdine", "Inez", "", "Rippen", new LocalDate(1962,7,18), "Den Haag", "Nederland", Sex.FEMALE,  null);
     }
 
     // //////////////////////////////////////
 
-    private User create(final String firstName, final String middleName, final String lastName, LocalDate dateOfBirth, final Sex sex, final Blob picture) {
-        return users.newUser(firstName, middleName, lastName, dateOfBirth, sex, picture);
+    private User create(final String baptismalName, final String firstName, final String middleName, final String lastName, LocalDate dateOfBirth, final String placeOfBirth, final String Nationality, final Sex sex, final Blob picture) {
+        return users.newUser(baptismalName, firstName, middleName, lastName, dateOfBirth, placeOfBirth, Nationality,sex, picture);
     }
 
     // //////////////////////////////////////

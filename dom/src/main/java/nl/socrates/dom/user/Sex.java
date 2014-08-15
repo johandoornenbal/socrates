@@ -2,9 +2,7 @@ package nl.socrates.dom.user;
 
 public enum Sex {
     MALE("man"),
-    FEMALE("vrouw"),
-    NEUTRAL("Onzijdig"),
-    HERMAPHRODITE("Dubbelzijdig");
+    FEMALE("vrouw");
     
     private String title;
     

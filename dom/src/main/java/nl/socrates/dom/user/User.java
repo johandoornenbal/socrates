@@ -1,5 +1,8 @@
 package nl.socrates.dom.user;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.VersionStrategy;
@@ -15,8 +18,11 @@ import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Render;
+import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.value.Blob;
 
+import nl.socrates.dom.contactdetails.ContactDetails;
 import nl.socrates.dom.user.User;
 
 
@@ -33,12 +39,25 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     public String title() {
         return String.format("%s (%s)", getFirstName(), getDateOfBirth().toString("dd-MM-yyyy"));
     }
+    private String baptismalName;
 
+    @Named("Doopnaam")
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @MemberOrder(sequence = "1")
+    public String getBaptismalName() {
+        return baptismalName;
+    }
+
+    public void setBaptismalName(String name) {
+        this.baptismalName = name;
+    }
+
+    
     private String firstName;
 
     @Named("Naam")
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @MemberOrder(sequence = "1")
+    @MemberOrder(sequence = "20")
     public String getFirstName() {
         return firstName;
     }
@@ -51,7 +70,7 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     
     @Named("tussen")
     @javax.jdo.annotations.Column(allowsNull = "true")
-    @MemberOrder(sequence = "2")
+    @MemberOrder(sequence = "30")
     public String getMiddleName() {
         return middleName;
     }
@@ -64,7 +83,7 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     
     @Named("Achternaam")
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @MemberOrder(sequence = "3")
+    @MemberOrder(sequence = "40")
     public String getLastName() {
         return lastName;
     }
@@ -76,7 +95,7 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     private LocalDate dateOfBirth;
 
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @MemberOrder(sequence = "4")
+    @MemberOrder(sequence = "50")
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
@@ -84,11 +103,37 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+ 
+    private String placeOfBirth;
+
+    @Named("Geboorteplaats")
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "55")
+    public String getPlaceOfBirth() {
+        return placeOfBirth;
+    }
+
+    public void setPlaceOfBirth(String name) {
+        this.placeOfBirth = name;
+    }
     
+    private String Nationality;
+
+    @Named("Nationaliteit")
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @MemberOrder(sequence = "56")
+    public String getNationality() {
+        return Nationality;
+    }
+
+    public void setNationality(String name) {
+        this.Nationality = name;
+    }
+   
     private Sex sex;
     @Named("Geslacht")
     @javax.jdo.annotations.Column(allowsNull = "false")
-    @MemberOrder(sequence = "5")
+    @MemberOrder(sequence = "60")
     public Sex getSex() {
         return sex;
     }
@@ -109,7 +154,7 @@ public class User extends AbstractDomainObject implements Comparable<User>{
     private Blob picture;
 
     @Named("Foto")
-    @MemberOrder(sequence = "6")
+    @MemberOrder(sequence = "70")
 //    @javax.jdo.annotations.Column(allowsNull = "true")
 //    @Hidden(where=Where.ALL_TABLES)
     @Optional
@@ -135,12 +180,27 @@ public class User extends AbstractDomainObject implements Comparable<User>{
         this.joinedOn = created;
     }
 
-    @MemberOrder(sequence = "5")
+    @MemberOrder(sequence = "80")
     @Named("Aangemeld op")
     public LocalDate getDateJoined() {
         return getJoinedOn().toLocalDate();
     }
 
+    // {{ ContactDetails (Collection)
+    @Persistent(mappedBy = "owner", dependentElement = "false")
+    private SortedSet<ContactDetails> contactDetails = new TreeSet<ContactDetails>();
+
+    @MemberOrder(sequence = "1")
+    @Render(Type.EAGERLY)
+    public SortedSet<ContactDetails> getContactDetails() {
+        return contactDetails;
+    }
+
+    public void setContactDetails(final SortedSet<ContactDetails> collectionName) {
+        this.contactDetails = collectionName;
+    }
+    // }}    
+    
     @Override
     public int compareTo(User o) {
         return ComparisonChain.start()
@@ -149,7 +209,13 @@ public class User extends AbstractDomainObject implements Comparable<User>{
         .result();
     }
     
-    
+    @Named("Voeg contactgegevens toe")
+    public ContactDetails addContactDetails(){
+        ContactDetails contactDetails = newTransientInstance(ContactDetails.class);
+        contactDetails.setOwner(this);
+        persist(contactDetails);
+        return contactDetails; 
+    }
     
 
 }

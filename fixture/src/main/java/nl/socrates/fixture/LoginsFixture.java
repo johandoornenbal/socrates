@@ -11,14 +11,14 @@ public class LoginsFixture extends FixtureScript{
     protected void execute(ExecutionContext executionContext) {
 
         // create
-        create("Johannes", "johan@filternet.nl");
-        create("Jeroen", "jvdwal@example.com");
+        create("johan@filternet.nl");
+        create("jvdwal@example.com");
     }
 
     // //////////////////////////////////////
 
-    private Login create(final String loginName, final String Email) {
-        return logins.newLogin(loginName, Email);
+    private Login create(final String Email) {
+        return logins.newLogin(Email);
     }
 
     // //////////////////////////////////////
