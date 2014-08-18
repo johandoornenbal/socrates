@@ -10,6 +10,7 @@ import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
 
 @DomainService
+@Named ("Contactgegevens")
 public class ContactDetailss extends AbstractFactoryAndRepository {
     
     @ActionSemantics(Of.SAFE)
@@ -17,20 +18,20 @@ public class ContactDetailss extends AbstractFactoryAndRepository {
         return allInstances(ContactDetails.class);
     }
 
-    public ContactDetails newContactDetails(
-            @Named("Emailadres") String Email,
-            @Optional @Named("Telefoonnummer") String Telephone
-            )
-    {
-        // create transient object (not persistent)
-        ContactDetails contactDetails = newTransientInstance(ContactDetails.class);
-       
-        //assign the values
-        contactDetails.setEmail(Email);
-        contactDetails.setTelephone(Telephone);
-        
-        // save object to database
-        persist(contactDetails);
-        return contactDetails;
-    }
+//    public ContactDetails newContactDetails(
+//            @Named("Emailadres") String Email,
+//            @Optional @Named("Telefoonnummer") String Telephone
+//            )
+//    {
+//        // create transient object (not persistent)
+//        ContactDetails contactDetails = newTransientInstance(ContactDetails.class);
+//       
+//        //assign the values
+//        contactDetails.setEmail(Email);
+//        contactDetails.setTelephone(Telephone);
+//        
+//        // save object to database
+//        persist(contactDetails);
+//        return contactDetails;
+//    }
 }

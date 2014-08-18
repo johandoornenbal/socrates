@@ -21,6 +21,7 @@ public class ContactsFixture extends FixtureScript {
         ContactDetails details = (ContactDetails) user.addContactDetails();
 
         details.setEmail("email@example.com");
+        details.setLivingAddressStreet("Hoofdstraat 33");
 
     }
 
