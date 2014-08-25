@@ -27,7 +27,6 @@ public class TearDownFixture extends FixtureScript {
     @Override
     protected void execute(ExecutionContext executionContext) {
         isisJdoSupport.executeUpdate("delete from \"SimpleObject\"");
-        isisJdoSupport.executeUpdate("delete from \"User\"");
     }
 
 
