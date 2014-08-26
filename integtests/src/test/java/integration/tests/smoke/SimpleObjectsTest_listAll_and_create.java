@@ -18,24 +18,26 @@
  */
 package integration.tests.smoke;
 
-import dom.simple.SimpleObject;
-import dom.simple.SimpleObjects;
-import fixture.simple.SimpleObjectsFixture;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import integration.tests.SimpleAppIntegTest;
 
 import java.util.List;
+
 import javax.inject.Inject;
+
+import dom.simple.SimpleObject;
+import dom.simple.SimpleObjects;
+import nl.socrates.fixture.SocratesDemoFixture;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 public class SimpleObjectsTest_listAll_and_create extends SimpleAppIntegTest {
 
     @Before
     public void setUpData() throws Exception {
-        scenarioExecution().install(new SimpleObjectsFixture());
+        scenarioExecution().install(new SocratesDemoFixture());
     }
 
     @Inject

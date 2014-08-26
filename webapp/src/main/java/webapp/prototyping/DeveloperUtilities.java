@@ -24,7 +24,7 @@ import org.apache.isis.core.metamodel.services.devutils.DeveloperUtilitiesServic
 
 /**
  * These overrides are simply to 'move' the action underneath the 
- * {@link fixture.simple.SimpleObjectsFixturesService prototyping} menu.
+ * {@link nl.socrates.fixture.SocratesFixturesService prototyping} menu.
  */
 @DomainService(menuOrder = "20")
 public class DeveloperUtilities extends DeveloperUtilitiesServiceDefault {
