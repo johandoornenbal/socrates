@@ -33,6 +33,9 @@ import org.apache.isis.applib.annotation.Title;
 import nl.socrates.dom.JdoColumnLength;
 import nl.socrates.dom.RegexValidation;
 import nl.socrates.dom.SocratesMutableObject;
+import nl.socrates.dom.WithNameComparable;
+import nl.socrates.dom.WithReferenceUnique;
+import nl.socrates.dom.communicationchannel.CommunicationChannelOwner;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
 @javax.jdo.annotations.DatastoreIdentity(
@@ -69,7 +72,8 @@ import nl.socrates.dom.SocratesMutableObject;
 @AutoComplete(repository = Parties.class, action = "autoComplete")
 @Bookmarkable
 public abstract class Party
-        extends SocratesMutableObject<Party> {
+        extends SocratesMutableObject<Party>
+        implements WithNameComparable<Party>, WithReferenceUnique, CommunicationChannelOwner {
 
     public Party() {
         super("name");

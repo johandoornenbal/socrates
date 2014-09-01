@@ -1,0 +1,59 @@
+{
+  "columns": [
+    {
+      "span": 4,
+      "memberGroups": {
+        "General": {
+          "members": {
+            "reference": {},
+            "gender": {}
+          }
+        },
+        "Name": {
+          "members": {
+            "name": {},
+            "firstName": {},
+            "initials": {},
+            "lastName": {}
+          }
+        }
+      }
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 0,
+      "memberGroups": {}
+    },
+    {
+      "span": 8,
+      "collections": {
+        "currentLeases": {
+            "actions": {
+                "allLeases": {}
+            }
+        },
+        "communicationChannels": {
+          "actions": {}
+        },
+        "currentBankMandates": {
+            "actions": {
+                "allMandates": {}
+            }
+        },
+        "financialAccounts": {
+          "actions": {}
+        },
+        "registrations": {
+          "actions": {
+            "newRegistration": {}
+          }
+        }
+      }
+    }
+  ],
+  "actions": {
+  }
+}
