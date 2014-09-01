@@ -120,6 +120,7 @@ public class Person extends Party {
 
     @javax.jdo.annotations.Column(allowsNull = "false", length = JdoColumnLength.TYPE_ENUM)
     @MemberOrder(sequence = "50")
+    @Named("Geslacht")
     public PersonGenderType getGender() {
         return gender;
     }
@@ -138,6 +139,7 @@ public class Person extends Party {
 
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "60")
+    @Named("Geboortedatum")
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }

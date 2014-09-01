@@ -44,8 +44,8 @@ public class PersonForJohanDo extends PersonAbstract {
                 "Leeuwarden", 
                 "NL-FRI", 
                 "NLD", 
+                "+31 58 266 1357", 
                 "+31 6 227 666 28", 
-                null, 
                 "johan@filternet.nl", 
                 executionContext);
     }

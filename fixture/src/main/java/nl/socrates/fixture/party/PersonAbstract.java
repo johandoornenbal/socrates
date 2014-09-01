@@ -69,7 +69,7 @@ public abstract class PersonAbstract extends SocratesFixtureScript {
             final State state = states.findState(stateReference);
             communicationChannelContributedActions.newPostal(
                     party,
-                    CommunicationChannelType.POSTAL_ADDRESS,
+                    CommunicationChannelType.POST_ADRES,
                     country,
                     state,
                     address1,
@@ -82,21 +82,21 @@ public abstract class PersonAbstract extends SocratesFixtureScript {
         if (phone != null) {
             communicationChannelContributedActions.newPhoneOrFax(
                     party,
-                    CommunicationChannelType.PHONE_NUMBER,
+                    CommunicationChannelType.TELEFOON_NUMMER,
                     phone);
             getContainer().flush();
         }
         if (fax != null) {
             communicationChannelContributedActions.newPhoneOrFax(
                     party,
-                    CommunicationChannelType.FAX_NUMBER,
+                    CommunicationChannelType.MOBIEL_NUMMER,
                     fax);
             getContainer().flush();
         }
         if (emailAddress != null) {
             communicationChannelContributedActions.newEmail(
                     party,
-                    CommunicationChannelType.EMAIL_ADDRESS,
+                    CommunicationChannelType.EMAIL_ADRES,
                     emailAddress);
             getContainer().flush();
         }

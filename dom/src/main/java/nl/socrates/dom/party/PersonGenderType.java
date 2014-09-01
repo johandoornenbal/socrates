@@ -18,15 +18,22 @@
  */
 package nl.socrates.dom.party;
 
-import nl.socrates.dom.utils.StringUtils;
+//import nl.socrates.dom.utils.StringUtils;
 
 public enum PersonGenderType {
-    UNKNOWN, 
-    MALE, 
-    FEMALE;
+    UNKNOWN("onbekend"), 
+    MALE("man"), 
+    FEMALE("vrouw");
+    
+    private String title;
+    
+    PersonGenderType(String title) {
+        this.title = title;
+    }
 
     public String title() {
-        return StringUtils.enumTitle(name());
+//        return StringUtils.enumTitle(name());
+        return title;
     }
 
 }

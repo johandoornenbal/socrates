@@ -54,17 +54,18 @@ public class CommunicationChannelContributions extends SocratesService<Communica
     @ActionSemantics(Of.NON_IDEMPOTENT)
     @MemberOrder(name = "CommunicationChannels", sequence = "1")
     @NotInServiceMenu
+    @Named("Nieuw adres")
     // CHECKSTYLE.OFF: ParameterNumber - Wicket viewer does not support
     // aggregate value types
     public CommunicationChannelOwner newPostal(
-            final @Named("Owner") CommunicationChannelOwner owner,
+            final @Named("Eigenaar") CommunicationChannelOwner owner,
             final @Named("Type") CommunicationChannelType type,
             final Country country,
             final @Optional State state,
-            final @Named("Address line 1") String address1,
-            final @Named("Address line 2") @Optional String address2,
-            final @Named("Address line 3") @Optional String address3,
-            final @Named("Postal Code") String postalCode, final @Named("City") String city
+            final @Named("Adres regel 1") String address1,
+            final @Named("Adres regel 2") @Optional String address2,
+            final @Named("Adres regel 3") @Optional String address3,
+            final @Named("Postcode") String postalCode, final @Named("Plaats") String city
             ) {
         communicationChannels.newPostal(owner, type, address1, address2, null, postalCode, city, state, country);
         return owner;
@@ -102,10 +103,11 @@ public class CommunicationChannelContributions extends SocratesService<Communica
     @ActionSemantics(Of.NON_IDEMPOTENT)
     @MemberOrder(name = "CommunicationChannels", sequence = "2")
     @NotInServiceMenu
+    @Named("Nieuwe email")
     public CommunicationChannelOwner newEmail(
-            final @Named("Owner") CommunicationChannelOwner owner,
+            final @Named("Eigenaar") CommunicationChannelOwner owner,
             final @Named("Type") CommunicationChannelType type,
-            final @Named("Address") String address) {
+            final @Named("Adres") String address) {
         communicationChannels.newEmail(owner, type, address);
         return owner;
     }
@@ -128,14 +130,14 @@ public class CommunicationChannelContributions extends SocratesService<Communica
 
     // //////////////////////////////////////
 
-    @Named("New Phone/Fax")
+    @Named("Nieuw telefoonnummer")
     @ActionSemantics(Of.NON_IDEMPOTENT)
     @MemberOrder(name = "CommunicationChannels", sequence = "3")
     @NotInServiceMenu
     public CommunicationChannelOwner newPhoneOrFax(
-            final @Named("Owner") CommunicationChannelOwner owner,
+            final @Named("Eigenaar") CommunicationChannelOwner owner,
             final @Named("Type") CommunicationChannelType type,
-            final @Named("Number") String number) {
+            final @Named("Nummer") String number) {
         communicationChannels.newPhoneOrFax(owner, type, number);
         return owner;
     }
@@ -162,6 +164,7 @@ public class CommunicationChannelContributions extends SocratesService<Communica
     @NotInServiceMenu
     @NotContributed(As.ACTION)
     @Render(Type.EAGERLY)
+    @Named("Communicatie kanalen")
     public SortedSet<CommunicationChannel> communicationChannels(final CommunicationChannelOwner owner) {
         return communicationChannels.findByOwner(owner);
     }

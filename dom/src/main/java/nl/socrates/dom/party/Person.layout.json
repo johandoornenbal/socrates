@@ -3,13 +3,13 @@
     {
       "span": 4,
       "memberGroups": {
-        "General": {
+        "Algemeen": {
           "members": {
             "reference": {},
             "gender": {}
           }
         },
-        "Name": {
+        "Naam": {
           "members": {
             "name": {},
             "firstName": {},

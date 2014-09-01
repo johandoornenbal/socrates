@@ -27,6 +27,7 @@ import javax.jdo.annotations.VersionStrategy;
 import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Bookmarkable;
 import org.apache.isis.applib.annotation.Disabled;
+import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.RegEx;
 import org.apache.isis.applib.annotation.Title;
 
@@ -87,6 +88,7 @@ public abstract class Party
     @RegEx(validation = RegexValidation.REFERENCE, caseSensitive = false)
     @Disabled
     @Title(sequence = "1")
+    @Named("Referentie")
     public String getReference() {
         return reference;
     }
@@ -101,6 +103,7 @@ public abstract class Party
 
     @javax.jdo.annotations.Column(allowsNull = "false", length = JdoColumnLength.Party.NAME)
     @Title(sequence = "2", prepend = "-")
+    @Named("Naam")
     public String getName() {
         return name;
     }
