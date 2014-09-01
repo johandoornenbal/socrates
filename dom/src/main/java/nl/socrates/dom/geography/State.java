@@ -53,12 +53,12 @@ import nl.socrates.dom.WithReferenceUnique;
     @javax.jdo.annotations.Query(
             name = "findByCountry", language = "JDOQL",
             value = "SELECT "
-                    + "FROM org.estatio.dom.geography.State "
+                    + "FROM nl.socrates.dom.geography.State "
                     + "WHERE country == :country"),
     @javax.jdo.annotations.Query(
             name = "findByReference", language = "JDOQL",
             value = "SELECT "
-                    + "FROM org.estatio.dom.geography.State "
+                    + "FROM nl.socrates.dom.geography.State "
                     + "WHERE reference == :reference")
 })
 @Immutable

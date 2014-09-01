@@ -48,7 +48,7 @@ import nl.socrates.dom.geography.States;
         @javax.jdo.annotations.Query(
                 name = "findByAddress", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM org.estatio.dom.communicationchannel.CommunicationChannel "
+                        + "FROM nl.socrates.dom.communicationchannel.CommunicationChannel "
                         + "WHERE owner == :owner"
                         + "&& address1 == :address1 "
                         + "&& postalCode == :postalCode "

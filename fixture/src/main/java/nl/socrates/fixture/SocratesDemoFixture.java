@@ -8,6 +8,7 @@ import nl.socrates.dom.party.Person;
 import nl.socrates.dom.party.PersonGenderType;
 import nl.socrates.dom.party.Persons;
 import nl.socrates.fixture.geography.refdata.CountriesAndStatesRefData;
+import nl.socrates.fixture.party.PersonForInezDo;
 import nl.socrates.fixture.party.PersonForJohanDo;
 
 
@@ -20,10 +21,10 @@ public class SocratesDemoFixture extends FixtureScript {
         
         // create
         create("JKORT", "J", "Jan","met de","Korte-Achternaam", "Johannes", PersonGenderType.MALE, new LocalDate(1960,6,26), "Amsterdam", "Nederland", executionContext);
-        create("IDOORN", "I", "Inez","","Doornenbal", "Alberdine", PersonGenderType.FEMALE, new LocalDate(1962,7,18), "Den Haag", "Nederland", executionContext);
         
         execute(new CountriesAndStatesRefData(), executionContext);
         execute(new PersonForJohanDo(), executionContext);
+        execute(new PersonForInezDo(), executionContext);
         
     }
     

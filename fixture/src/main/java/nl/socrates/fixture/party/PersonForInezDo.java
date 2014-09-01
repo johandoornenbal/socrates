@@ -22,21 +22,21 @@ import org.joda.time.LocalDate;
 
 import nl.socrates.dom.party.PersonGenderType;
 
-public class PersonForJohanDo extends PersonAbstract {
+public class PersonForInezDo extends PersonAbstract {
 
-    public static final String PARTY_REFERENCE = "JDOORN";
+    public static final String PARTY_REFERENCE = "IDOORN";
 
     @Override
     protected void execute(ExecutionContext executionContext) {
         createPerson(PARTY_REFERENCE, 
-                "J", 
-                "Johan",
+                "A", 
+                "Inez",
                 "",
                 "Doornenbal", 
-                "Johannes", 
-                PersonGenderType.MALE, 
-                new LocalDate(1962,7,16), 
-                "Leeuwarden", 
+                "Alberdine", 
+                PersonGenderType.FEMALE, 
+                new LocalDate(1962,7,14), 
+                "Den Haag", 
                 "Nederland", 
                 "Bongastate 11",
                 "", 
@@ -44,9 +44,9 @@ public class PersonForJohanDo extends PersonAbstract {
                 "Leeuwarden", 
                 "NL-FRI", 
                 "NLD", 
-                "+31 6 227 666 28", 
+                "+31 58 266 1357", 
                 null, 
-                "johan@filternet.nl", 
+                "inez@filternet.nl", 
                 executionContext);
     }
 }
