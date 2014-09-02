@@ -17,14 +17,16 @@ public class SocratesDemoFixture extends FixtureScript {
     @Override
     protected void execute(ExecutionContext executionContext) {
         // prereqs
-        execute(new TearDownFixture(), executionContext);
+//        execute(new TearDownFixture(), executionContext);
         
         // create
+        execute(new PersonForJohanDo(), executionContext);
+        execute(new PersonForInezDo(), executionContext);
+        
         create("JKORT", "J", "Jan","met de","Korte-Achternaam", "Johannes", PersonGenderType.MALE, new LocalDate(1960,6,26), "Amsterdam", "Nederland", executionContext);
         
         execute(new CountriesAndStatesRefData(), executionContext);
-        execute(new PersonForJohanDo(), executionContext);
-        execute(new PersonForInezDo(), executionContext);
+
         
     }
     

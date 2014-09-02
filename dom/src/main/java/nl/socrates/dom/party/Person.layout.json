@@ -5,8 +5,7 @@
       "memberGroups": {
         "Algemeen": {
           "members": {
-            "reference": {},
-            "gender": {}
+            "reference": {}
           }
         },
         "Naam": {
@@ -15,7 +14,8 @@
             "firstName": {},
             "initials": {},
             "middleName": {},
-            "lastName": {}
+            "lastName": {},
+            "gender": {}
           }
         },
         "Info" : {

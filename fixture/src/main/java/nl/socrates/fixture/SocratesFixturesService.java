@@ -57,12 +57,20 @@ public class SocratesFixturesService extends FixtureScripts {
 
     // //////////////////////////////////////
 
+//    @Prototype
+//    @MemberOrder(sequence="20")
+//    public Object installFixturesAndReturnFirst() {
+//        final List<FixtureResult> run = findFixtureScriptFor(SocratesDemoFixture.class).run(null);
+//        return run.get(0).getObject();
+//    }
+    
     @Prototype
-    @MemberOrder(sequence="20")
-    public Object installFixturesAndReturnFirst() {
-        final List<FixtureResult> run = findFixtureScriptFor(SocratesDemoFixture.class).run(null);
-        return run.get(0).getObject();
+    @MemberOrder(sequence="10")
+    public List<FixtureResult> installDemoFixtures() {
+        return runFixtureScript(new SocratesDemoFixture(), null);
+        // return "Demo fixtures successfully installed";
     }
+
 
 
 }

@@ -37,7 +37,6 @@ public class Person extends Party {
     private String initials;
 
     @javax.jdo.annotations.Column(length = JdoColumnLength.Person.INITIALS)
-    @MemberOrder(sequence = "1")
     @Named("Voorletter(s)")
     @Hidden(where=Where.ALL_TABLES)
     public String getInitials() {
@@ -127,16 +126,8 @@ public class Person extends Party {
     @javax.jdo.annotations.Column(allowsNull = "false", length = JdoColumnLength.TYPE_ENUM)
     @MemberOrder(sequence = "50")
     @Named("Geslacht")
-    @Hidden(where=Where.ALL_TABLES)
     public PersonGenderType getGender() {
         return gender;
-    }
-    
-    @Hidden(where=Where.OBJECT_FORMS) // appears only in tables
-    @MemberOrder(sequence = "55")
-    @Named("Geslacht")   
-    public PersonGenderType getGenderForTables() {
-        return getGender();
     }
 
     public void setGender(final PersonGenderType gender) {
