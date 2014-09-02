@@ -187,7 +187,7 @@ public class Person extends Party {
 
     public void updating() {
         TitleBuffer tb = new TitleBuffer();
-        setName(tb.append(getLastName()).append(",", getFirstName()).toString());
+        setName(tb.append(getLastName()).append(",", getFirstName()).append(" ", getMiddleName()).toString());
     }
 
 }

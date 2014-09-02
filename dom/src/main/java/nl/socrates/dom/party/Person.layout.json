@@ -14,8 +14,17 @@
             "name": {},
             "firstName": {},
             "initials": {},
+            "middleName": {},
             "lastName": {}
           }
+        },
+        "Info" : {
+        	"members": {
+        		"baptismalName" : {},
+        		"dateOfBirth" : {},
+        		"placeOfBirth" : {},
+        		"nationality" : {}
+        	}
         }
       }
     },

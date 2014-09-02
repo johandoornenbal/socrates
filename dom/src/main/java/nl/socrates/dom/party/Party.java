@@ -27,9 +27,11 @@ import javax.jdo.annotations.VersionStrategy;
 import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Bookmarkable;
 import org.apache.isis.applib.annotation.Disabled;
+import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.RegEx;
 import org.apache.isis.applib.annotation.Title;
+import org.apache.isis.applib.annotation.Where;
 
 import nl.socrates.dom.JdoColumnLength;
 import nl.socrates.dom.RegexValidation;
@@ -89,6 +91,7 @@ public abstract class Party
     @Disabled
     @Title(sequence = "1")
     @Named("Referentie")
+    @Hidden(where=Where.ALL_TABLES)
     public String getReference() {
         return reference;
     }
