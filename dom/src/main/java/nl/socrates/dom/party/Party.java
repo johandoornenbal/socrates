@@ -28,6 +28,7 @@ import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Bookmarkable;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.RegEx;
 import org.apache.isis.applib.annotation.Title;
@@ -105,8 +106,9 @@ public abstract class Party
     private String name;
 
     @javax.jdo.annotations.Column(allowsNull = "false", length = JdoColumnLength.Party.NAME)
-    @Title(sequence = "2", prepend = "-")
+    @Title(sequence = "2", prepend = " - ")
     @Named("Naam")
+    @MemberOrder(sequence="10")
     public String getName() {
         return name;
     }

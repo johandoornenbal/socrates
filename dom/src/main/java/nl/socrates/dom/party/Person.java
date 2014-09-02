@@ -22,8 +22,10 @@ import javax.jdo.annotations.InheritanceStrategy;
 
 import org.joda.time.LocalDate;
 
+import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.util.TitleBuffer;
 
 import nl.socrates.dom.JdoColumnLength;
@@ -37,6 +39,7 @@ public class Person extends Party {
     @javax.jdo.annotations.Column(length = JdoColumnLength.Person.INITIALS)
     @MemberOrder(sequence = "1")
     @Named("Voorletter(s)")
+    @Hidden(where=Where.ALL_TABLES)
     public String getInitials() {
         return initials;
     }
@@ -74,6 +77,7 @@ public class Person extends Party {
     @javax.jdo.annotations.Column(allowsNull = "true", length = JdoColumnLength.MIDDLE_NAME)
     @MemberOrder(sequence = "20")
     @Named("Tussen")
+    @Hidden(where=Where.ALL_TABLES)
     public String getMiddleName() {
         return middleName;
     }
@@ -90,6 +94,7 @@ public class Person extends Party {
     @javax.jdo.annotations.Column(allowsNull = "false", length = JdoColumnLength.PROPER_NAME)
     @MemberOrder(sequence = "30")
     @Named("Achternaam")
+    @Hidden(where=Where.ALL_TABLES)
     public String getLastName() {
         return lastName;
     }
@@ -105,6 +110,7 @@ public class Person extends Party {
     @Named("Doopnaam")
     @javax.jdo.annotations.Column(allowsNull = "true", length = JdoColumnLength.PROPER_NAME)
     @MemberOrder(sequence = "40")
+    @Hidden(where=Where.ALL_TABLES)
     public String getBaptismalName() {
         return baptismalName;
     }
@@ -121,8 +127,16 @@ public class Person extends Party {
     @javax.jdo.annotations.Column(allowsNull = "false", length = JdoColumnLength.TYPE_ENUM)
     @MemberOrder(sequence = "50")
     @Named("Geslacht")
+    @Hidden(where=Where.ALL_TABLES)
     public PersonGenderType getGender() {
         return gender;
+    }
+    
+    @Hidden(where=Where.OBJECT_FORMS) // appears only in tables
+    @MemberOrder(sequence = "55")
+    @Named("Geslacht")   
+    public PersonGenderType getGenderForTables() {
+        return getGender();
     }
 
     public void setGender(final PersonGenderType gender) {
@@ -155,6 +169,7 @@ public class Person extends Party {
     @Named("Geboorteplaats")
     @javax.jdo.annotations.Column(allowsNull = "false", length = JdoColumnLength.PROPER_NAME)
     @MemberOrder(sequence = "70")
+    @Hidden(where=Where.ALL_TABLES)
     public String getPlaceOfBirth() {
         return placeOfBirth;
     }
@@ -170,6 +185,7 @@ public class Person extends Party {
     @Named("Nationaliteit")
     @javax.jdo.annotations.Column(allowsNull = "false", length = JdoColumnLength.PROPER_NAME)
     @MemberOrder(sequence = "80")
+    @Hidden(where=Where.ALL_TABLES)
     public String getNationality() {
         return nationality;
     }
