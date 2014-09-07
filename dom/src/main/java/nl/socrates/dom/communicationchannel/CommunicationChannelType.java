@@ -31,7 +31,8 @@ import nl.socrates.dom.utils.StringUtils;
 public enum CommunicationChannelType implements TitledEnum {
 
     WOON_ADRES(PostalAddress.class), 
-    POST_ADRES(PostalAddress.class), 
+    POST_ADRES(PostalAddress.class),
+    BEPPE_ADRES(PostalAddress.class),
     EMAIL_ADRES(EmailAddress.class), 
     EXTRA_EMAIL_ADRES(EmailAddress.class), 
     TELEFOON_NUMMER(PhoneOrFaxNumber.class), 

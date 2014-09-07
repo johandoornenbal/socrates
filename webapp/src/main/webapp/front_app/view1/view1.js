@@ -13,7 +13,7 @@ angular.module('myApp.view1', ['ngRoute'])
 	$http({
 		method: "GET",
 //		url: '/restful/services/Parties/actions/allParties/invoke',
-		url: 'http://socrates.johandoornenbal.eu.cloudbees.net/restful/services',
+		url: 'http://socrates.johandoornenbal.eu.cloudbees.net/restful/objects/nl.socrates.dom.party.Person/L_1',
 		headers: {'Authorization': 'Basic c3ZlbjpwYXNz' }
 	}).
 	success(function(isisdata, status) {

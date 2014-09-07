@@ -25,7 +25,8 @@ import org.apache.isis.applib.annotation.MemberOrder;
 public enum PersonGenderType {
     UNKNOWN("onbekend"), 
     MALE("man"), 
-    FEMALE("vrouw");
+    FEMALE("vrouw"),
+    NEUTRAL("onzijdig");
     
     private String title;
     

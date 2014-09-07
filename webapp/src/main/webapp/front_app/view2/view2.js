@@ -11,5 +11,5 @@ angular.module('myApp.view2', ['ngRoute', 'restangular'])
 
 .controller('View2Ctrl', function($scope, Restangular) {
 	
-	$scope.isistest = Restangular.all('services').getList().$object;
+	$scope.isistest = Restangular.all('/').getList('', {'Authorization': 'Basic c3ZlbjpwYXNz'}).$object;
 });

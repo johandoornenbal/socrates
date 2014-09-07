@@ -1,0 +1,25 @@
+<h1>SOCRATES</h1>
+<div style="float:left; margin: 20px;">
+	<p>PERSONEN</p>
+	<ul>
+		<li ng-repeat="(key, value) in allpersonsObj">
+			<a href="" ng-click="detailAction(value.href, value.title)">{{value.title}}</a>
+		</li>
+	</ul>
+</div>
+
+<div style="float:left; margin: 20px;">
+<p>DETAILS</p>
+<b>{{Person_Title}}</b>
+<ul>
+	<li ng-repeat="(key, value) in Person_Obj.members" ng-if="showMember(value.memberType)">
+		{{key}} : {{value.value}}
+	</li>
+</ul>
+</div>
+<div style="clear: both";></div>
+<hr>
+<div style="margin: 20px;">
+<p class="small"><a href="{{pathchosen}}">{{pathchosen}}</a></p>	
+</div>
+<hr>
