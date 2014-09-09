@@ -31,3 +31,27 @@
 .small {
 	font-size: 10px;
 }
+li {
+	list-style: none;
+}
+input {
+	margin-bottom: 5px;
+}
+.ng-valid.ng-dirty {
+	border-color:#78FA89;
+}
+#div_allepersonen {
+	float:left; 
+	margin: 20px; 
+	width: 30%;
+}
+#div_details {
+	float:left; 
+	margin: 20px; 
+	width: 35%;	
+}
+#div_nieuwepersoon {
+	float:left; 
+	margin: 20px; 
+	width: 25%;	
+}

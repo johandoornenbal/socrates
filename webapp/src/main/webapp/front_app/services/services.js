@@ -3,13 +3,15 @@
 /* Services */
 
 angular.module('myApp.services', [])
-.factory('restService', ['$q', '$http', function($q, $http){
+.factory('restService', ['$q', '$http', function($q, $http, myMethod, myData){
 	
-	var isisRestObj = function(path){
+	var isisRestObj = function(path, myMethod, myData){
 		var isisObj = $q.defer();
 		$http({
-			method: "GET",
+//			method: "GET",
+			method: myMethod,
 			url: path,
+			data: myData,
 			headers: {'Authorization': 'Basic c3ZlbjpwYXNz' }
 		})
 		.success(function(isisdata) {

@@ -11,9 +11,10 @@ angular.module('myApp.view1', ['ngRoute'])
 
 .controller('View1Ctrl', function ISISwww($scope, $http) {
 	$http({
-		method: "GET",
-//		url: '/restful/services/Parties/actions/allParties/invoke',
-		url: 'http://socrates.johandoornenbal.eu.cloudbees.net/restful/objects/nl.socrates.dom.party.Person/L_1',
+		method: "POST",
+		url: '/restful/services/Persons/actions/newPerson/invoke',
+//		data: { "referentie" : { "value" : "REST3" }, "voorletter(s)" : { "value" : "R" }, "achternaam" : { "value" : "REST" }, "doopnaam" : { "value" : "Restfullio" }, "geslacht" : { "value" : "MALE" }, "geboortedatum" : { "value" : "1990-10-10" }, "geboorteplaats" : { "value" : "RESTPLACE" }, "nationaliteit" : { "value" : "RESTLANDER" } },
+//		url: 'http://socrates.johandoornenbal.eu.cloudbees.net/restful/objects/nl.socrates.dom.party.Person/L_1',
 		headers: {'Authorization': 'Basic c3ZlbjpwYXNz' }
 	}).
 	success(function(isisdata, status) {

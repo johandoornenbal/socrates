@@ -9,17 +9,17 @@ angular.module('myApp.view4', ['ngRoute', 'myApp.services'])
   });
 }])
 .controller('View4Ctrl', function($scope, restService) {
-	restService.isisRestObj('/restful/').then(function(data){
+	restService.isisRestObj('/restful/','GET').then(function(data){
 		$scope.homelinks = data.links;
 		$scope.homeextensions = data.extensions;
 	});
-	restService.isisRestObj('/restful/services').then(function(data){
+	restService.isisRestObj('/restful/services','GET').then(function(data){
 		$scope.servicesObj = data;
 	});
-	restService.isisRestObj('/restful/services/Persons').then(function(data){
+	restService.isisRestObj('/restful/services/Persons','GET').then(function(data){
 		$scope.personsObj = data;
 	});
-	restService.isisRestObj('/restful/services/Persons/actions/allPersons/invoke').then(function(data){
+	restService.isisRestObj('/restful/services/Persons/actions/allPersons/invoke','GET').then(function(data){
 		$scope.allpersonsObj = data;
 	});
 });
