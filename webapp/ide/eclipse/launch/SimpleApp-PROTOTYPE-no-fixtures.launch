@@ -20,4 +20,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="--port 8080 --type SERVER_PROTOTYPE"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="socrates_app-webapp"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx1024m"/>
 </launchConfiguration>

@@ -18,25 +18,36 @@
  */
 package nl.socrates.dom.party;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
 import org.joda.time.LocalDate;
 
+import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.util.TitleBuffer;
 
 import nl.socrates.dom.JdoColumnLength;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+@AutoComplete(repository=Persons.class,  action="autoComplete")
 public class Person extends Party {
     
     private String initials;
 
-    @javax.jdo.annotations.Column(length = JdoColumnLength.Person.INITIALS)
+    @javax.jdo.annotations.Column(allowsNull = "true", length = JdoColumnLength.Person.INITIALS)
     @Named("Voorletter(s)")
     @Hidden(where=Where.ALL_TABLES)
     public String getInitials() {
@@ -58,7 +69,7 @@ public class Person extends Party {
     
     private String firstName;
 
-    @javax.jdo.annotations.Column(allowsNull = "true", length = JdoColumnLength.PROPER_NAME)
+    @javax.jdo.annotations.Column(allowsNull = "false", length = JdoColumnLength.PROPER_NAME)
     @MemberOrder(sequence = "10")
     @Named("Voornaam")
     public String getFirstName() {
@@ -188,13 +199,44 @@ public class Person extends Party {
     // //////////////////////////////////////
     
     public String validate() {
-        return getFirstName().isEmpty() || getInitials().isEmpty() ?
-                "Er moet tenminste een voorletter of een voornaam ingevuld zijn" : null;
+        if ((getFirstName() == null || getFirstName().isEmpty()) && (getInitials() == null || getInitials().isEmpty())) {
+                return "Er moet tenminste een voorletter of een voornaam ingevuld zijn";}
+        else {
+            return null;
+        }
     }
 
     public void updating() {
         TitleBuffer tb = new TitleBuffer();
-        setName(tb.append(getLastName()).append(",", getFirstName()).append(" ", getMiddleName()).toString());
+//        TODO: deze werkt op een of andere manier niet goed met JDO
+        setName(tb.append(getLastName()).append(",", getFirstName()).toString());
+    }
+    
+    // PersonProfile (Collection)
+    private SortedSet<PersonProfile> personprofiles = new TreeSet<PersonProfile>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "person", dependentElement = "true")
+    @Named("Profielen")
+    public SortedSet<PersonProfile> getPersonprofiles() {
+        return personprofiles;
     }
 
+    public void setPersonprofiles(final SortedSet<PersonProfile> personProfiles){
+        this.personprofiles = personProfiles;
+    }
+
+//    TODO:ONE ON ONE NOT WORKING: find out...
+//    @Persistent(mappedBy="person", dependentElement="true")
+//    private PersonProfile profile;
+//    
+//    @javax.jdo.annotations.Column(allowsNull = "true")
+//    @Optional
+//    public PersonProfile getProfile() {
+//        return profile;
+//    }
+//    
+//    public void setProfile(PersonProfile profile) {
+//        this.profile = profile;
+//    }
 }

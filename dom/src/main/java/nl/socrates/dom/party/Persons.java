@@ -49,8 +49,8 @@ public class Persons extends SocratesDomainService<Person> {
     @Named("Nieuw persoon")
     public Person newPerson(
             final @Named("Referentie") @Optional @RegEx(validation=RegexValidation.Person.REFERENCE) String reference,
-            final @Named("Voorletter(s)") @Optional @RegEx(validation=RegexValidation.Person.INITIALS) String initials,
-            final @Named("Voornaam") @Optional String firstName,
+            final @Named("Voorletter(s)") @RegEx(validation=RegexValidation.Person.INITIALS) String initials,
+            final @Named("Voornaam") String firstName,
             final @Named("Tussen") @Optional String middleName,
             final @Named("Achternaam") String lastName,
             final @Named("Doopnaam") @Optional String baptismalName,

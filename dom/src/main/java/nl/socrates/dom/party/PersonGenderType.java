@@ -18,15 +18,12 @@
  */
 package nl.socrates.dom.party;
 
-import org.apache.isis.applib.annotation.MemberOrder;
-
 //import nl.socrates.dom.utils.StringUtils;
 
 public enum PersonGenderType {
     UNKNOWN("onbekend"), 
     MALE("man"), 
-    FEMALE("vrouw"),
-    NEUTRAL("onzijdig");
+    FEMALE("vrouw");
     
     private String title;
     
