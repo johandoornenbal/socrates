@@ -18,19 +18,19 @@
  */
 package integration.tests;
 
-import integration.SimpleAppSystemInitializer;
-
 import org.junit.BeforeClass;
 
 import org.apache.isis.core.integtestsupport.IntegrationTestAbstract;
 import org.apache.isis.core.integtestsupport.scenarios.ScenarioExecutionForIntegration;
+
+import nl.socrates.dom.SocratesSystemInitializer;
 
 public abstract class SimpleAppIntegTest extends IntegrationTestAbstract {
 
     @BeforeClass
     public static void initClass() {
         org.apache.log4j.PropertyConfigurator.configure("logging.properties");
-        SimpleAppSystemInitializer.initIsft();
+        SocratesSystemInitializer.initIsft();
         
         // instantiating will install onto ThreadLocal
         new ScenarioExecutionForIntegration();

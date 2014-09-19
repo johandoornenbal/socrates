@@ -21,10 +21,9 @@ package nl.socrates.dom.party;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Column;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 
 import org.joda.time.LocalDate;
 
@@ -32,10 +31,9 @@ import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Render;
-import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.annotation.Render.Type;
+import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.util.TitleBuffer;
 
 import nl.socrates.dom.JdoColumnLength;
@@ -239,4 +237,16 @@ public class Person extends Party {
 //    public void setProfile(PersonProfile profile) {
 //        this.profile = profile;
 //    }
+    
+    private ChildOfPerson child;
+    
+    @Column(allowsNull="true")
+    @Persistent(mappedBy="fieldOnChild")
+    public ChildOfPerson getChild() {
+        return child;
+    }
+    
+    public void setChild(final ChildOfPerson child){
+        this.child = child;
+    }
 }

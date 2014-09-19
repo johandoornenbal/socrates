@@ -1,4 +1,4 @@
-package integration;
+package nl.socrates.dom;
 
 import org.apache.log4j.Level;
 

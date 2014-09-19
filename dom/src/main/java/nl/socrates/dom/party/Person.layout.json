@@ -25,7 +25,12 @@
         		"placeOfBirth" : {},
         		"nationality" : {}
         	}
-        }
+        },
+        "Kindje" : {
+        	"members" : {
+        		"child" : {}
+        	}
+        } 
       }
     },
     {
@@ -39,17 +44,12 @@
     {
       "span": 8,
       "collections": {
-        "currentLeases": {
-            "actions": {
-                "allLeases": {}
-            }
-        },
         "personprofiles": {
             "actions": {}
         },
         "communicationChannels": {
           "actions": {}
-        },        
+        },     
         "financialAccounts": {
           "actions": {}
         },
