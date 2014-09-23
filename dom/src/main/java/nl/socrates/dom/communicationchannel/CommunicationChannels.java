@@ -34,10 +34,11 @@ import org.apache.isis.applib.annotation.Prototype;
 import nl.socrates.dom.SocratesDomainService;
 import nl.socrates.dom.geography.Country;
 import nl.socrates.dom.geography.State;
+import nl.socrates.dom.party.Party;
 
 
 @DomainService(menuOrder = "70", repositoryFor = CommunicationChannel.class)
-@Hidden
+//@Hidden
 public class CommunicationChannels extends SocratesDomainService<CommunicationChannel> {
 
     public CommunicationChannels() {
@@ -111,11 +112,22 @@ public class CommunicationChannels extends SocratesDomainService<CommunicationCh
     // //////////////////////////////////////
 
     @Prototype
+    @NotInServiceMenu
     public List<CommunicationChannel> allCommunicationChannels() {
         return allInstances(CommunicationChannel.class);
     }
 
     // //////////////////////////////////////
+    
+    @NotInServiceMenu
+    public List<CommunicationChannel> findCommunicationChannel(final Party party) {
+       
+        return allMatches("findByOwner","owner", party);
+       
+    }
+    
+    // //////////////////////////////////////
+    
 
     @NotInServiceMenu
     @ActionSemantics(Of.SAFE)

@@ -15,6 +15,7 @@ import org.apache.isis.applib.value.Blob;
 public class PersonProfiles extends AbstractFactoryAndRepository {
     
     @Named("Alle profielen")
+    @NotInServiceMenu
     public List<PersonProfile> listAll() {
         return container.allInstances(PersonProfile.class);
     }
