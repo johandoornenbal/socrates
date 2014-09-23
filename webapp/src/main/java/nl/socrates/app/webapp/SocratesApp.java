@@ -16,7 +16,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package webapp;
+package nl.socrates.app.webapp;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,35 +39,34 @@ import org.apache.wicket.request.Response;
 import org.apache.wicket.request.http.WebRequest;
 
 import org.apache.isis.viewer.wicket.ui.app.registry.ComponentFactoryRegistrar;
-import org.apache.isis.viewer.wicket.ui.pages.PageClassList;
 import org.apache.isis.viewer.wicket.viewer.IsisWicketApplication;
 import org.apache.isis.viewer.wicket.viewer.integration.wicket.AuthenticatedWebSessionForIsis;
-import org.apache.isis.viewer.wicket.viewer.registries.pages.PageClassListDefault;
-
 
 /**
  * As specified in <tt>web.xml</tt>.
  * 
  * <p>
  * See:
+ * 
  * <pre>
  * &lt;filter>
  *   &lt;filter-name>wicket&lt;/filter-name>
  *    &lt;filter-class>org.apache.wicket.protocol.http.WicketFilter&lt;/filter-class>
  *    &lt;init-param>
  *      &lt;param-name>applicationClassName&lt;/param-name>
- *      &lt;param-value>webapp.SimpleApplication&lt;/param-value>
+ *      &lt;param-value>nl.socrates.app.webapp.SocratesApp&lt;/param-value>
  *    &lt;/init-param>
  * &lt;/filter>
  * </pre>
  * 
  */
-public class SimpleApplication extends IsisWicketApplication {
+public class SocratesApp extends IsisWicketApplication {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * uncomment for a (slightly hacky) way of allowing logins using query args, eg:
+     * uncomment for a (slightly hacky) way of allowing logins using query args,
+     * eg:
      * 
      * <tt>?user=sven&pass=pass</tt>
      * 
@@ -75,13 +74,13 @@ public class SimpleApplication extends IsisWicketApplication {
      * for demos only, obvious.
      */
     private final static boolean DEMO_MODE_USING_CREDENTIALS_AS_QUERYARGS = false;
-    
+
     @Override
     public Session newSession(final Request request, final Response response) {
-        if(!DEMO_MODE_USING_CREDENTIALS_AS_QUERYARGS) {
+        if (!DEMO_MODE_USING_CREDENTIALS_AS_QUERYARGS) {
             return super.newSession(request, response);
-        } 
-        
+        }
+
         // else demo mode
         final AuthenticatedWebSessionForIsis s = (AuthenticatedWebSessionForIsis) super.newSession(request, response);
         final org.apache.wicket.util.string.StringValue user = request.getRequestParameters().getParameterValue("user");
@@ -92,9 +91,9 @@ public class SimpleApplication extends IsisWicketApplication {
 
     @Override
     public WebRequest newWebRequest(HttpServletRequest servletRequest, String filterPath) {
-        if(!DEMO_MODE_USING_CREDENTIALS_AS_QUERYARGS) {
+        if (!DEMO_MODE_USING_CREDENTIALS_AS_QUERYARGS) {
             return super.newWebRequest(servletRequest, filterPath);
-        } 
+        }
 
         // else demo mode
         try {
@@ -107,21 +106,21 @@ public class SimpleApplication extends IsisWicketApplication {
         WebRequest request = super.newWebRequest(servletRequest, filterPath);
         return request;
     }
-    
+
     @Override
     protected Module newIsisWicketModule() {
         final Module isisDefaults = super.newIsisWicketModule();
-        
+
         final Module simpleOverrides = new AbstractModule() {
             @Override
             protected void configure() {
-                bind(ComponentFactoryRegistrar.class).to(ComponentFactoryRegistrarForSimpleApp.class);
-                
-                bind(String.class).annotatedWith(Names.named("applicationName")).toInstance("Simple App");
+                bind(ComponentFactoryRegistrar.class).to(ComponentFactoryRegistrarForSocrates.class);
+
+                bind(String.class).annotatedWith(Names.named("applicationName")).toInstance("Socrates App");
                 bind(String.class).annotatedWith(Names.named("applicationCss")).toInstance("css/application.css");
                 bind(String.class).annotatedWith(Names.named("applicationJs")).toInstance("scripts/application.js");
                 bind(String.class).annotatedWith(Names.named("welcomeMessage")).toInstance(readLines("welcome.html"));
-                bind(String.class).annotatedWith(Names.named("aboutMessage")).toInstance("Simple App");
+                bind(String.class).annotatedWith(Names.named("aboutMessage")).toInstance("Socrates App");
                 bind(InputStream.class).annotatedWith(Names.named("metaInfManifest")).toProvider(Providers.of(getServletContext().getResourceAsStream("/META-INF/MANIFEST.MF")));
             }
         };
@@ -131,7 +130,7 @@ public class SimpleApplication extends IsisWicketApplication {
 
     private static String readLines(final String resourceName) {
         try {
-            List<String> readLines = Resources.readLines(Resources.getResource(SimpleApplication.class, resourceName), Charset.defaultCharset());
+            List<String> readLines = Resources.readLines(Resources.getResource(SocratesApp.class, resourceName), Charset.defaultCharset());
             final String aboutText = Joiner.on("\n").join(readLines);
             return aboutText;
         } catch (IOException e) {

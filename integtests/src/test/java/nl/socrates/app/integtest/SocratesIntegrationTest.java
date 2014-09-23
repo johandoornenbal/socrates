@@ -1,4 +1,4 @@
-package integration.tests;
+package nl.socrates.app.integtest;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
@@ -18,10 +18,8 @@ public abstract class SocratesIntegrationTest extends IntegrationTestAbstract {
     @BeforeClass
     public static void initClass() {
         PropertyConfigurator.configure("logging.properties");
-
+        SocratesSystemInitializer.initIsft();
         LOG.info("Starting tests");
-    
-        // instantiating will install onto ThreadLocal
         new ScenarioExecutionForIntegration();
     }
 

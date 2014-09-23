@@ -1,4 +1,4 @@
-package nl.socrates.dom;
+package nl.socrates.app.integtest;
 
 
 import org.apache.isis.core.integtestsupport.IsisSystemForTest;

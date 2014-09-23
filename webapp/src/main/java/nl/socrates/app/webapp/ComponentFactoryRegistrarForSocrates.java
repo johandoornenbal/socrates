@@ -16,14 +16,14 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package webapp;
+package nl.socrates.app.webapp;
 
 import com.google.inject.Singleton;
 
 import org.apache.isis.viewer.wicket.viewer.registries.components.ComponentFactoryRegistrarDefault;
 
 @Singleton
-public class ComponentFactoryRegistrarForSimpleApp extends ComponentFactoryRegistrarDefault {
+public class ComponentFactoryRegistrarForSocrates extends ComponentFactoryRegistrarDefault {
 
     @Override
     public void addComponentFactories(ComponentFactoryList componentFactories) {

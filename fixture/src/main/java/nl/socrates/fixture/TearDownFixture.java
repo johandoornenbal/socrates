@@ -28,12 +28,12 @@ public class TearDownFixture extends FixtureScript {
     
     @Override
     protected void execute(ExecutionContext executionContext) {
-        isisJdoSupport.executeUpdate("delete from CommunicationChannel");
-        isisJdoSupport.executeUpdate("delete from PersonProfile");
-        isisJdoSupport.executeUpdate("delete from State");
-        isisJdoSupport.executeUpdate("delete from Country");
-        isisJdoSupport.executeUpdate("delete from Person");
-        isisJdoSupport.executeUpdate("delete from Party");
+        isisJdoSupport.executeUpdate("delete from \"CommunicationChannel\"");
+        isisJdoSupport.executeUpdate("delete from \"PersonProfile\"");
+        isisJdoSupport.executeUpdate("delete from \"State\"");
+        isisJdoSupport.executeUpdate("delete from \"Country\"");
+        isisJdoSupport.executeUpdate("delete from \"Person\"");
+        isisJdoSupport.executeUpdate("delete from \"Party\"");
     }
 
     @javax.inject.Inject
