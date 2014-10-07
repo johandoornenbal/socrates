@@ -2,6 +2,8 @@ package nl.socrates.dom.party;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.DomainService;
@@ -13,7 +15,7 @@ import nl.socrates.dom.SocratesDomainService;
 
 @DomainService(menuOrder = "30", repositoryFor = PersonContact.class)
 @Named("Persoonlijke contacten")
-//@AutoComplete(repository=Persons.class,  action="findPersons")
+@AutoComplete(repository=Persons.class,  action="findPersons")
 public class PersonContacts extends SocratesDomainService<PersonContact>{
     
     public PersonContacts() {
@@ -26,7 +28,7 @@ public class PersonContacts extends SocratesDomainService<PersonContact>{
     public PersonContact createContact(
         final Person owner,
         @Named("Contact") final Person contact,
-        @Named("Level") final Integer level
+        @Named("Level") final TrustLevel level
         ) {
         final PersonContact pc = container.newTransientInstance(PersonContact.class);
         pc.setOwner(owner);
@@ -36,8 +38,8 @@ public class PersonContacts extends SocratesDomainService<PersonContact>{
         return pc;
     }
     
-    public List<Person> autoComplete1CreateContact(String search) {
-        return Persons.findPersons(search);
+    public List<Person> autoComplete1CreateContact(final String search) {
+        return persons.findPersons(search);
     }
     
     @Named("Alle persoonlijke contacten")
@@ -48,5 +50,8 @@ public class PersonContacts extends SocratesDomainService<PersonContact>{
     
     @javax.inject.Inject 
     DomainObjectContainer container;
+    
+    @Inject
+    Persons persons;
     
 }

@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright 2012-2014 Eurocommercial Properties NV
+ *  Copyright 2012-2014 Yodo
  *
  *
  *  Licensed under the Apache License, Version 2.0 (the
