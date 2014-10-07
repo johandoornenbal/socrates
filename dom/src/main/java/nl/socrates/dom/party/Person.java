@@ -21,7 +21,6 @@ package nl.socrates.dom.party;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.jdo.annotations.Column;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
@@ -238,15 +237,17 @@ public class Person extends Party {
 //        this.profile = profile;
 //    }
     
-    private ChildOfPerson child;
+
+    private SortedSet<PersonContact> personcontacts = new TreeSet<PersonContact>();
     
-    @Column(allowsNull="true")
-    @Persistent(mappedBy="fieldOnChild")
-    public ChildOfPerson getChild() {
-        return child;
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "owner", dependentElement = "true")
+    @Named("Persoonlijke contacten")
+    public SortedSet<PersonContact> getPersoncontacts() {
+        return personcontacts;
     }
     
-    public void setChild(final ChildOfPerson child){
-        this.child = child;
+    public void setPersoncontacts(final SortedSet<PersonContact> personcontacts) {
+        this.personcontacts = personcontacts;
     }
 }

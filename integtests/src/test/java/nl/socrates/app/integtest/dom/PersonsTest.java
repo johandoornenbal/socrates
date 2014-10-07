@@ -36,7 +36,7 @@ public class PersonsTest extends SocratesIntegrationTest {
         private static final String LAST_NAME = "Potgerukt";
         private static final String MIDDLE_NAME = "van de";
         private static final String FIRST_NAME = "Johannes";
-        private static final String INITIALS = "JMCH";
+        private static final String INITIALS = "JMC";
         private static final String REFERENCE = "reference";
 
         Person p;
