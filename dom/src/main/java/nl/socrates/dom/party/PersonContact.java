@@ -5,13 +5,11 @@ import javax.jdo.annotations.InheritanceStrategy;
 import com.google.common.collect.ComparisonChain;
 
 import org.apache.isis.applib.AbstractDomainObject;
-import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-@AutoComplete(repository=PersonContacts.class, action="autoComplete")
 public class PersonContact extends AbstractDomainObject implements Comparable<PersonContact>{
     
     private Person owner;

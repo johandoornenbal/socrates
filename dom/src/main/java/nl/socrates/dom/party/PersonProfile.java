@@ -14,7 +14,6 @@ import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Title;
-import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.value.Blob;
 
 @javax.jdo.annotations.PersistenceCapable(identityType = IdentityType.DATASTORE)
