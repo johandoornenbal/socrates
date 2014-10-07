@@ -24,6 +24,7 @@ import org.joda.time.LocalDate;
 
 import nl.socrates.dom.RegexValidation;
 import nl.socrates.dom.SocratesDomainService;
+import nl.socrates.dom.utils.StringUtils;
 
 import org.apache.isis.applib.annotation.ActionSemantics;
 import org.apache.isis.applib.annotation.DomainService;
@@ -83,5 +84,8 @@ public class Persons extends SocratesDomainService<Person> {
     public List<Person> allPersons() {
         return allInstances();
     }
-
+    
+    public List<Person> findPersons(final String lastname) {
+        return allMatches("matchByLastName", "lastName", StringUtils.wildcardToCaseInsensitiveRegex(lastname));
+    }
 }

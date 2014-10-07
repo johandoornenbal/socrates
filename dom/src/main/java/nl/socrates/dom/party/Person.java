@@ -19,6 +19,7 @@
 package nl.socrates.dom.party;
 
 import java.util.SortedSet;
+
 import java.util.TreeSet;
 
 import javax.jdo.annotations.InheritanceStrategy;
@@ -37,8 +38,17 @@ import org.apache.isis.applib.util.TitleBuffer;
 
 import nl.socrates.dom.JdoColumnLength;
 
+
+
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+@javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "matchByLastName", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM nl.socrates.dom.person.Person "
+                    + "WHERE lastName.matches(:lastName)")
+    })
 @AutoComplete(repository=Persons.class,  action="autoComplete")
 public class Person extends Party {
     

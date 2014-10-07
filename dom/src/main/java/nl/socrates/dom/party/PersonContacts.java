@@ -3,6 +3,7 @@ package nl.socrates.dom.party;
 import java.util.List;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
@@ -12,6 +13,7 @@ import nl.socrates.dom.SocratesDomainService;
 
 @DomainService(menuOrder = "30", repositoryFor = PersonContact.class)
 @Named("Persoonlijke contacten")
+@AutoComplete(repository=Persons.class,  action="findPersons")
 public class PersonContacts extends SocratesDomainService<PersonContact>{
     
     public PersonContacts() {
@@ -42,4 +44,5 @@ public class PersonContacts extends SocratesDomainService<PersonContact>{
     
     @javax.inject.Inject 
     DomainObjectContainer container;
+    
 }
