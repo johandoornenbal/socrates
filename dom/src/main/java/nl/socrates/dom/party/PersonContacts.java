@@ -13,7 +13,7 @@ import nl.socrates.dom.SocratesDomainService;
 
 @DomainService(menuOrder = "30", repositoryFor = PersonContact.class)
 @Named("Persoonlijke contacten")
-@AutoComplete(repository=Persons.class,  action="findPersons")
+//@AutoComplete(repository=Persons.class,  action="findPersons")
 public class PersonContacts extends SocratesDomainService<PersonContact>{
     
     public PersonContacts() {
@@ -34,6 +34,10 @@ public class PersonContacts extends SocratesDomainService<PersonContact>{
         pc.setLevel(level);
         container.persistIfNotAlready(pc);
         return pc;
+    }
+    
+    public List<Person> autoComplete1CreateContact(String search) {
+        return Persons.findPersons(search);
     }
     
     @Named("Alle persoonlijke contacten")
