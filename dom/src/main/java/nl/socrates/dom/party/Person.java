@@ -260,4 +260,17 @@ public class Person extends Party {
     public void setPersoncontacts(final SortedSet<PersonContact> personcontacts) {
         this.personcontacts = personcontacts;
     }
+    
+    private SortedSet<PersonContact> referringtoyou = new TreeSet<PersonContact>();
+
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "contact", dependentElement = "false")
+    @Named("Verwijzingen terug")
+    public SortedSet<PersonContact> getReferringtoyou() {
+        return referringtoyou;
+    }
+    
+    public void setReferringtoyou(final SortedSet<PersonContact> referrer) {
+        this.referringtoyou = referrer;
+    }
 }

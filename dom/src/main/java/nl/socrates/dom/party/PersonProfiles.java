@@ -26,10 +26,12 @@ public class PersonProfiles extends AbstractFactoryAndRepository {
     public PersonProfile createProfile(
         @Named("Porfiel naam") final String profilename,
         final Person person,
+        final TrustLevel level,
         @Optional @Named("Foto") Blob picture ) {
         final PersonProfile pf = container.newTransientInstance(PersonProfile.class);
         pf.setProfilename(profilename);
         pf.setPerson(person);
+        pf.setProfileTrustlevel(level);
         pf.setPicture(picture);
         container.persistIfNotAlready(pf);
         return pf;

@@ -57,6 +57,18 @@ public class PersonProfile extends AbstractDomainObject implements Comparable<Pe
         this.person = person;
     }
 
+    private TrustLevel profileTrustlevel;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Named ("Vertrouwensniveau")
+    public TrustLevel getProfileTrustlevel() {
+        return profileTrustlevel;
+    }
+    
+    public void setProfileTrustlevel(final TrustLevel level) {
+        this.profileTrustlevel = level;
+    }
+    
     //region > foto (property)
     // //////////////////////////////////////////////////////////////////////////
     @javax.jdo.annotations.Persistent(defaultFetchGroup = "false", columns = {
@@ -86,6 +98,7 @@ public class PersonProfile extends AbstractDomainObject implements Comparable<Pe
         return ComparisonChain.start()
                 .compare(this.getPerson(), other.getPerson())
                 .compare(this.getProfilename(), other.getProfilename())
+                .compare(this.getProfileTrustlevel(), other.getProfileTrustlevel())
                 .result();
     }
     

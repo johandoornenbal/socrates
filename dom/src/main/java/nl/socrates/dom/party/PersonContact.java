@@ -8,10 +8,9 @@ import java.util.List;
 import com.google.common.collect.ComparisonChain;
 
 import org.apache.isis.applib.AbstractDomainObject;
-import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.annotation.Title;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -22,7 +21,7 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "10")
     @Named("Eigenaar")
-    @Hidden(where = Where.PARENTED_TABLES)
+//    @Hidden(where = Where.PARENTED_TABLES)
     public Person getOwner() {
         return owner;
     }
@@ -33,6 +32,7 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
     
     private Person contact;
    
+    @Title
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "20")
     @Named("Contact")   
