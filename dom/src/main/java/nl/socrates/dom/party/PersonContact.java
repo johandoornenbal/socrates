@@ -8,12 +8,21 @@ import java.util.List;
 import com.google.common.collect.ComparisonChain;
 
 import org.apache.isis.applib.AbstractDomainObject;
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Title;
+import org.apache.isis.applib.query.QueryDefault;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+@javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "findPersonContact", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM nl.socrates.dom.person.PersonContact "
+                    + "WHERE owner.matches(:owner)")
+    })
 public class PersonContact extends AbstractDomainObject implements Comparable<PersonContact>{
     
     private Person owner;
@@ -64,6 +73,16 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
     public TrustLevel defaultLevel() {
         return TrustLevel.ENTRY_LEVEL;
     }
+    
+    public List<PersonContact> delete() {
+        container.removeIfNotAlready(this);
+        QueryDefault<PersonContact> query = 
+                QueryDefault.create(
+                        PersonContact.class, 
+                    "findPersonContact", 
+                    "owner", owner);
+        return (List<PersonContact>) container.allMatches(query);    
+    }
 
     @Override
     public int compareTo(PersonContact o) {
@@ -76,5 +95,8 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
     
     @Inject
     Persons persons;
+    
+    @javax.inject.Inject
+    private DomainObjectContainer container;
 
 }
