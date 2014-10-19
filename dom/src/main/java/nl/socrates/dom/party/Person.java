@@ -18,16 +18,20 @@
  */
 package nl.socrates.dom.party;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
-
 import java.util.TreeSet;
 
+import javax.inject.Inject;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
 import org.joda.time.LocalDate;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
+import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
@@ -64,6 +68,7 @@ public class Person extends Party {
     public void setInitials(final String initials) {
         this.initials = initials;
     }
+    
 
     // //////////////////////////////////////
     
@@ -205,6 +210,21 @@ public class Person extends Party {
     
     // //////////////////////////////////////
     
+    private Person lastContact;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @Named("Laatste die mij als contact toegevoegd heeft")
+    @Disabled
+    public Person getLastContact() {
+        return lastContact;
+    }
+    
+    public void setLastContact(final Person lastcontact) {
+        this.lastContact = lastcontact;
+    }
+    
+    // //////////////////////////////////////
+    
     public String validate() {
         if ((getFirstName() == null || getFirstName().isEmpty()) && (getInitials() == null || getInitials().isEmpty())) {
                 return "Er moet tenminste een voorletter of een voornaam ingevuld zijn";}
@@ -232,22 +252,7 @@ public class Person extends Party {
     public void setPersonprofiles(final SortedSet<PersonProfile> personProfiles){
         this.personprofiles = personProfiles;
     }
-
-//    TODO:ONE ON ONE NOT WORKING: find out...
-//    @Persistent(mappedBy="person", dependentElement="true")
-//    private PersonProfile profile;
-//    
-//    @javax.jdo.annotations.Column(allowsNull = "true")
-//    @Optional
-//    public PersonProfile getProfile() {
-//        return profile;
-//    }
-//    
-//    public void setProfile(PersonProfile profile) {
-//        this.profile = profile;
-//    }
     
-
     private SortedSet<PersonContact> personcontacts = new TreeSet<PersonContact>();
     
     @Render(Type.EAGERLY)
@@ -261,16 +266,39 @@ public class Person extends Party {
         this.personcontacts = personcontacts;
     }
     
-    private SortedSet<PersonContact> referringtoyou = new TreeSet<PersonContact>();
+//    @Render(Type.EAGERLY)
+//    @Named("Personen verwijzend naar mij")
+//    public List<Person> getReferringToMe(){
+//        List<Person> pReferring = new ArrayList<Person>();
+//        for(PersonContact e: pcontacts.listAll()) {
+//            if (e.getContact() == this)
+//                pReferring.add(e.getOwner());
+//        }
+//        return pReferring;
+//    }
 
     @Render(Type.EAGERLY)
-    @Persistent(mappedBy = "contact", dependentElement = "false")
-    @Named("Verwijzingen terug")
-    public SortedSet<PersonContact> getReferringtoyou() {
-        return referringtoyou;
-    }
+    @Named("Personen verwijzend naar mij")
+    public List<Referer> getReferringToMe2(){
+        List<Referer> pReferring = new ArrayList<Referer>();
+        for(PersonContact e: pcontacts.listAll()) {
+            if (e.getContact() == this) {
+                Referer referer = new Referer();
+                referer.setOwner(e.getOwner());
+                referer.setDate(e.getDateCreatedOn());
+                referer.setLevel(e.getLevel());
+                pReferring.add(referer);
+            }
+        }
+        return pReferring;
+    }    
     
-    public void setReferringtoyou(final SortedSet<PersonContact> referrer) {
-        this.referringtoyou = referrer;
-    }
+
+    @Inject
+    PersonContacts pcontacts;
+    
+    // TODO: dient nog nergens voor. Probeer te regelen dat Referer goed doorklikt in de WicketViewer en niet een Null error geeft
+    @SuppressWarnings("unused")
+    @javax.inject.Inject
+    private DomainObjectContainer container;
 }

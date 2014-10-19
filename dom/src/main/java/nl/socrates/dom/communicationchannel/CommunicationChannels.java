@@ -120,6 +120,7 @@ public class CommunicationChannels extends SocratesDomainService<CommunicationCh
     // //////////////////////////////////////
     
     @NotInServiceMenu
+    @Programmatic
     public List<CommunicationChannel> findCommunicationChannel(final Party party) {
        
         return allMatches("findByOwner","owner", party);

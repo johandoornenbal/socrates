@@ -9,7 +9,6 @@ import javax.jdo.annotations.VersionStrategy;
 import com.google.common.collect.ComparisonChain;
 
 import org.apache.isis.applib.AbstractDomainObject;
-import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
@@ -29,6 +28,18 @@ import org.apache.isis.applib.value.Blob;
 @javax.jdo.annotations.Discriminator(
         strategy = DiscriminatorStrategy.CLASS_NAME,
         column = "discriminator")
+@javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "findProfile", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM nl.socrates.dom.person.PersonProfile "
+                    + "WHERE person == :person"),
+    @javax.jdo.annotations.Query(        
+            name = "findProfilePersonAndLevel", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM nl.socrates.dom.person.PersonProfile "
+                    + "WHERE person == :person && profileTrustlevel == :level")                  
+    })
 public class PersonProfile extends AbstractDomainObject implements Comparable<PersonProfile>{
 
 

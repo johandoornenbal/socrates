@@ -10,6 +10,7 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.NotInServiceMenu;
+import org.apache.isis.applib.services.clock.ClockService;
 
 import nl.socrates.dom.SocratesDomainService;
 
@@ -27,14 +28,14 @@ public class PersonContacts extends SocratesDomainService<PersonContact>{
     @NotInServiceMenu
     public PersonContact createContact(
         final Person owner,
-        @Named("Contact") final Person contact,
-        @Named("Level") final TrustLevel level
+        @Named("Contact") final Person contact
         ) {
         final PersonContact pc = container.newTransientInstance(PersonContact.class);
         pc.setOwner(owner);
         pc.setContact(contact);
-        pc.setLevel(level);
+        pc.setCreatedOn(clockService.nowAsLocalDateTime());
         container.persistIfNotAlready(pc);
+        pc.publishTestEvent();
         return pc;
     }
     
@@ -53,5 +54,9 @@ public class PersonContacts extends SocratesDomainService<PersonContact>{
     
     @Inject
     Persons persons;
+    
+    @Inject
+    private ClockService clockService;
+    
     
 }

@@ -26,11 +26,13 @@ import nl.socrates.dom.RegexValidation;
 import nl.socrates.dom.SocratesDomainService;
 import nl.socrates.dom.utils.StringUtils;
 
+import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionSemantics;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Prototype;
 import org.apache.isis.applib.annotation.RegEx;
 import org.apache.isis.applib.annotation.ActionSemantics.Of;
@@ -88,4 +90,22 @@ public class Persons extends SocratesDomainService<Person> {
     public List<Person> findPersons(final String lastname) {
         return allMatches("matchByLastName", "lastName", StringUtils.wildcardToCaseInsensitiveRegex(lastname));
     }
+    
+    @com.google.common.eventbus.Subscribe 
+    @Programmatic
+    public void onPersonContactEvent(PersonContactEvent e) {
+            //TODO: iets als test
+        container.informUser("Event: " + e.getTestString() + " " + e.getContact().toString());
+        findContact(e.getContact()).setLastContact(e.getContactOwner());
+    }
+    
+    @Programmatic
+    public Person findContact(final Person contact) {
+        int index = this.allPersons().indexOf(contact);
+        return this.allPersons().get(index);
+    }
+
+    @javax.inject.Inject
+    private DomainObjectContainer container;
+    
 }
