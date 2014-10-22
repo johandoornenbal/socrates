@@ -1,6 +1,8 @@
 package nl.socrates.dom.party;
 
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.InheritanceStrategy;
@@ -19,10 +21,15 @@ import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Title;
 import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.services.eventbus.EventBusService;
+
+import nl.socrates.dom.feedback.FeedbackItem;
+import nl.socrates.dom.feedback.FeedbackItems;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -30,13 +37,18 @@ import org.apache.isis.applib.services.eventbus.EventBusService;
     @javax.jdo.annotations.Query(
             name = "findPersonContact", language = "JDOQL",
             value = "SELECT "
-                    + "FROM nl.socrates.dom.person.PersonContact "
+                    + "FROM nl.socrates.dom.party.PersonContact "
                     + "WHERE owner == :owner"),
     @javax.jdo.annotations.Query(
             name = "findReferringContact", language = "JDOQL",
             value = "SELECT "
-                    + "FROM nl.socrates.dom.person.PersonContact "
-                    + "WHERE contact == :contact")                   
+                    + "FROM nl.socrates.dom.party.PersonContact "
+                    + "WHERE contact == :contact"),
+    @javax.jdo.annotations.Query(
+            name = "findConfirmedContacts", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM nl.socrates.dom.party.PersonContact "
+                    + "WHERE (owner == :owner || contact == :owner) && status == :status"),                                       
     })
 public class PersonContact extends AbstractDomainObject implements Comparable<PersonContact> {
     
@@ -91,6 +103,19 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
         return TrustLevel.ENTRY_LEVEL;
     }
     
+    private PersonContactStatus status;
+    
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    @Named("Status")
+//    @Disabled
+    public PersonContactStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(final PersonContactStatus status){
+        this.status = status;
+    }
+    
     private LocalDateTime createdOn;
     
     @Hidden
@@ -115,7 +140,7 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
         eventBusService.post(new PersonContactEvent("Notificatie opgenomen bij ", this.getOwner(), this.getContact()));
     }
     
-    @Named("Verwijderen?")
+    @Named("Dit contact verwijderen")
     public List<PersonContact> delete(@Optional @Named("Verwijderen OK?") boolean areYouSure) { 
         container.removeIfNotAlready(this);
         
@@ -133,6 +158,30 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
 
+    private SortedSet<FeedbackItem> feedback = new TreeSet<FeedbackItem>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "personcontact", dependentElement = "true")
+    @Named("Gegeven feedback aan dit contact")
+    public SortedSet<FeedbackItem> getFeedback(){
+        return feedback;
+    }
+    
+    public void setFeedback(final SortedSet<FeedbackItem> feedback) {
+        this.feedback = feedback;
+    }
+    
+    @Named("Dit contact feedback geven")
+    public List<FeedbackItem> addFeedback(String testfeedback){
+        fbItems.createFeedbackItem(this.getOwner(), this.getContact(), testfeedback, this);
+        QueryDefault<FeedbackItem> query = 
+                QueryDefault.create(
+                        FeedbackItem.class, 
+                    "findFeedbackByOwnerAndReceiver", 
+                    "owner", getOwner(),
+                    "receiver" , getContact());
+        return (List<FeedbackItem>) container.allMatches(query);           
+    }
     
     @Override
     public int compareTo(PersonContact o) {
@@ -146,6 +195,9 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
     
     @Inject
     Persons persons;
+    
+    @Inject
+    FeedbackItems fbItems;
     
     @javax.inject.Inject
     private DomainObjectContainer container;

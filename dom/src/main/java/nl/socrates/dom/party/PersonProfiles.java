@@ -46,11 +46,11 @@ public class PersonProfiles extends AbstractFactoryAndRepository {
                 QueryDefault<PersonProfile> query = 
                         QueryDefault.create(
                         PersonProfile.class, 
-                        "findProfilePersonAndLevel", 
+                        "findProfileByPersonAndLevel", 
                         "person", person,
                         "level", level);
         return container.firstMatch(query) != null?
-        "Er is al een profiel op dit level gemaakt. Pas die eventueel aan..."        
+        "Je hebt al een profiel op dit level gemaakt. Pas dat profiel (eventueel) aan in plaats van hier een nieuwe te maken."        
         :null;
     }
 

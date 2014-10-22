@@ -38,10 +38,10 @@ import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
 
 import nl.socrates.dom.JdoColumnLength;
-
 
 
 @javax.jdo.annotations.PersistenceCapable
@@ -215,6 +215,7 @@ public class Person extends Party {
     @javax.jdo.annotations.Column(allowsNull = "true")
     @Named("Laatste die mij als contact toegevoegd heeft")
     @Disabled
+    @Hidden(where=Where.ALL_TABLES)
     public Person getLastContact() {
         return lastContact;
     }
@@ -266,20 +267,10 @@ public class Person extends Party {
         this.personcontacts = personcontacts;
     }
     
-//    @Render(Type.EAGERLY)
-//    @Named("Personen verwijzend naar mij")
-//    public List<Person> getReferringToMe(){
-//        List<Person> pReferring = new ArrayList<Person>();
-//        for(PersonContact e: pcontacts.listAll()) {
-//            if (e.getContact() == this)
-//                pReferring.add(e.getOwner());
-//        }
-//        return pReferring;
-//    }
 
     @Render(Type.EAGERLY)
-    @Named("Personen verwijzend naar mij")
-    public List<Referer> getReferringToMe2(){
+    @Named("Personen verwijzend naar mij (versie1)")
+    public List<Referer> getReferringToMe1(){
         List<Referer> pReferring = new ArrayList<Referer>();
         for(PersonContact e: pcontacts.listAll()) {
             if (e.getContact() == this) {
@@ -291,14 +282,38 @@ public class Person extends Party {
             }
         }
         return pReferring;
-    }    
+    } 
+    
+    private SortedSet<PersonContact> personreferring = new TreeSet<PersonContact>();
+    
+    @Render(Type.EAGERLY)
+    @Persistent(mappedBy = "contact", dependentElement = "true")
+    @Named("Personen verwijzend naar mij (versie2)")
+    public SortedSet<PersonContact> getPersonreferring() {
+        return personreferring;
+    }
+    
+    public void setPersonreferring(final SortedSet<PersonContact> personcontacts) {
+        this.personreferring = personcontacts;
+    }
+    
+    
+    @Render(Type.EAGERLY)
+    @Named("Bevestigde persoonlijke contacten")
+    public List<PersonContact> getConfirmedContacts() {
+        QueryDefault<PersonContact> query = 
+                QueryDefault.create(
+                    PersonContact.class, 
+                    "findConfirmedContacts", 
+                    "owner", this,
+                    "status", PersonContactStatus.CONFIRMED);        
+        return container.allMatches(query);
+    }
     
 
     @Inject
     PersonContacts pcontacts;
     
-    // TODO: dient nog nergens voor. Probeer te regelen dat Referer goed doorklikt in de WicketViewer en niet een Null error geeft
-    @SuppressWarnings("unused")
     @javax.inject.Inject
     private DomainObjectContainer container;
 }

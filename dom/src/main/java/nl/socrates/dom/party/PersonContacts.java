@@ -34,6 +34,7 @@ public class PersonContacts extends SocratesDomainService<PersonContact>{
         pc.setOwner(owner);
         pc.setContact(contact);
         pc.setCreatedOn(clockService.nowAsLocalDateTime());
+        pc.setStatus(PersonContactStatus.UNCONFIRMED);
         container.persistIfNotAlready(pc);
         pc.publishTestEvent();
         return pc;

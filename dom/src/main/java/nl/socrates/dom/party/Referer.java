@@ -1,5 +1,7 @@
 package nl.socrates.dom.party;
 
+import com.google.common.collect.ComparisonChain;
+
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.AbstractDomainObject;
@@ -10,7 +12,7 @@ import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Where;
 
 @Immutable
-public class Referer extends AbstractDomainObject {
+public class Referer extends AbstractDomainObject implements Comparable<Referer>{
     
     private Person owner;
     
@@ -50,5 +52,15 @@ public class Referer extends AbstractDomainObject {
     public void setLevel(final TrustLevel level) {
         this.level = level;
     }
+    
+    @Override
+    public int compareTo(Referer r) {
+        return ComparisonChain.start()
+                .compare(this.getOwner(),r.getOwner())
+                .compare(this.getLevel(),r.getLevel())
+                .compare(this.getDate(), r.getDate())
+                .result();
+    }
+    
 
 }

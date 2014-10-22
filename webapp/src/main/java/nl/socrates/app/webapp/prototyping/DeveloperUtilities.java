@@ -16,11 +16,13 @@
  */
 package nl.socrates.app.webapp.prototyping;
 
+import org.isisaddons.module.devutils.dom.DeveloperUtilitiesServiceDefault;
+
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.value.Blob;
 import org.apache.isis.applib.value.Clob;
-import org.apache.isis.core.metamodel.services.devutils.DeveloperUtilitiesServiceDefault;
+
 
 /**
  * These overrides are simply to 'move' the action underneath the 
