@@ -34,8 +34,18 @@ public class PersonProfiles extends AbstractFactoryAndRepository {
         pf.setPerson(person);
         pf.setProfileTrustlevel(level);
         pf.setPicture(picture);
+        pf.setOwner(container.getUser().getName());
         container.persistIfNotAlready(pf);
         return pf;
+    }
+    
+    public boolean hideCreateProfile(){
+ 
+        // user is admin of socrates app
+        if (container.getUser().hasRole("isisModuleSecurityRealm:socrates-admin")) {
+            return false;
+        }
+        return true;
     }
     
     public String validateCreateProfile(

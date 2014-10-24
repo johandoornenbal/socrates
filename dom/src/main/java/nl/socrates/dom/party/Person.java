@@ -27,9 +27,12 @@ import javax.inject.Inject;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Persistent;
 
+import com.google.common.base.Objects;
+
 import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.Identifier;
 import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
@@ -40,6 +43,7 @@ import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.Where;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
+import org.apache.isis.applib.value.Blob;
 
 import nl.socrates.dom.JdoColumnLength;
 
@@ -55,6 +59,48 @@ import nl.socrates.dom.JdoColumnLength;
     })
 @AutoComplete(repository=Persons.class,  action="autoComplete")
 public class Person extends Party {
+    
+    public String disabled(Identifier.Type type){
+        // user is owner
+        if (Objects.equal(getOwner(), container.getUser().getName())) {
+            return null;
+        }
+        // user is admin of socrates app
+        if (container.getUser().hasRole("isisModuleSecurityRealm:socrates-admin")) {
+            return null;
+        }
+        // user is neither owner nor admin
+        return "Not allowed to modify / Niet toegestaan te wijzigen";
+    }
+
+       // just to see how the first role looks like
+//    public String getYourRole() {
+//        return container.getUser().getRoles().get(0).getName();
+//    }
+    
+    private String owner;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @Hidden
+    public String getOwner() {
+        return owner;
+    }
+    
+    public void setOwner(final String owner)
+    {
+        this.owner=owner;
+    }
+    
+    public void changeOwner(final String owner) {
+        this.setOwner(owner);
+    }
+    public boolean hideChangeOwner(final String owner) {
+        // user is admin of socrates app
+        if (container.getUser().hasRole("isisModuleSecurityRealm:socrates-admin")) {
+            return false;
+        }
+        return true;
+    }
     
     private String initials;
 
@@ -225,6 +271,49 @@ public class Person extends Party {
     }
     
     // //////////////////////////////////////
+    @Named("Maak een profiel")
+    public List<PersonProfile> makeProfile(final String profilename, final TrustLevel level, final Blob picture){
+        profiles.createProfile(
+                profilename, 
+                this, 
+                level, 
+                picture);
+        QueryDefault<PersonProfile> query = 
+                QueryDefault.create(
+                     PersonProfile.class, 
+                    "findProfileByPerson", 
+                    "person", this);
+        
+        return (List<PersonProfile>) container.allMatches(query); 
+    }
+    
+    public String validateMakeProfile(
+            final String profilename,
+            final TrustLevel level,
+            final Blob picture) {
+                QueryDefault<PersonProfile> query = 
+                        QueryDefault.create(
+                        PersonProfile.class, 
+                        "findProfileByPersonAndLevel", 
+                        "person", this,
+                        "level", level);
+        return container.firstMatch(query) != null?
+        "Je hebt al een profiel op dit level gemaakt. Pas dat profiel (eventueel) aan in plaats van hier een nieuwe te maken."        
+        :null;
+    }
+    
+    public boolean hideMakeProfile(){
+        // user is owner
+        if (Objects.equal(getOwner(), container.getUser().getName())) {
+            return false;
+        }       
+        // user is admin of socrates app
+        if (container.getUser().hasRole("isisModuleSecurityRealm:socrates-admin")) {
+            return false;
+        }
+        return true;
+    }
+    // //////////////////////////////////////
     
     public String validate() {
         if ((getFirstName() == null || getFirstName().isEmpty()) && (getInitials() == null || getInitials().isEmpty())) {
@@ -316,4 +405,7 @@ public class Person extends Party {
     
     @javax.inject.Inject
     private DomainObjectContainer container;
+    
+    @Inject
+    PersonProfiles profiles;
 }

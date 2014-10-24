@@ -73,6 +73,7 @@ public class Persons extends SocratesDomainService<Person> {
         person.setPlaceOfBirth(placeOfBirth);
         person.setNationality(Nationality);
         person.updating();
+        person.setOwner(container.getUser().getName());
         persist(person);
         return person;
     }

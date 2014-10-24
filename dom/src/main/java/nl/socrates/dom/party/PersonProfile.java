@@ -8,10 +8,13 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.VersionStrategy;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 
 import org.apache.isis.applib.AbstractDomainObject;
 import org.apache.isis.applib.DomainObjectContainer;
+import org.apache.isis.applib.Identifier;
+import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
@@ -46,6 +49,45 @@ import org.apache.isis.applib.value.Blob;
     })
 public class PersonProfile extends AbstractDomainObject implements Comparable<PersonProfile>{
 
+    //authorization: only Read access unlesss
+    //TODO: needs to be extended by hiding it according to Trustlevel
+    public String disabled(Identifier.Type type){
+        // user is owner
+        if (Objects.equal(getOwner(), container.getUser().getName())) {
+            return null;
+        }
+        // user is admin of socrates app
+        if (container.getUser().hasRole("isisModuleSecurityRealm:socrates-admin")) {
+            return null;
+        }
+        // user is neither owner nor admin
+        return "Not allowed to modify / Niet toegestaan te wijzigen";
+    }
+    
+    private String owner;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @Disabled
+    @Hidden
+    public String getOwner() {
+        return owner;
+    }
+    
+    public void setOwner(final String owner)
+    {
+        this.owner=owner;
+    }
+    public void changeOwner(final String owner) {
+        this.setOwner(owner);
+    }
+    public boolean hideChangeOwner(final String owner) {
+        // user is admin of socrates app
+        if (container.getUser().hasRole("isisModuleSecurityRealm:socrates-admin")) {
+            return false;
+        }
+        return true;
+    }    
+    
 
     private String profilename;
 
@@ -125,6 +167,19 @@ public class PersonProfile extends AbstractDomainObject implements Comparable<Pe
     public String validateDelete(boolean areYouSure) {
         return areYouSure? null:"Geef aan of je wilt verwijderen";
     }
+    public boolean hideDelete(boolean areYouSure) {
+        // user is owner
+        if (Objects.equal(getOwner(), container.getUser().getName())) {
+            return false;
+        }
+        // user is admin of socrates app
+        if (container.getUser().hasRole("isisModuleSecurityRealm:socrates-admin")) {
+            return false;
+        }
+        // user is neither owner nor admin
+        return true;        
+    }
+    
     
     
     @Override
