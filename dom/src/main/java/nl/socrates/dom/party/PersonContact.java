@@ -53,7 +53,12 @@ import nl.socrates.dom.feedback.FeedbackItems;
             name = "findReferringContactUserName", language = "JDOQL",
             value = "SELECT "
                     + "FROM nl.socrates.dom.party.PersonContact "
-                    + "WHERE ownerPerson == :ownerPerson && contactUserName == :contactUserName")                
+                    + "WHERE ownerPerson == :ownerPerson && contactUserName == :contactUserName"),
+    @javax.jdo.annotations.Query(
+            name = "findReferringOwnerContactUserName", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM nl.socrates.dom.party.PersonContact "
+                    + "WHERE owner == :owner && contactUserName == :contactUserName")
     })
 public class PersonContact extends AbstractDomainObject implements Comparable<PersonContact> {
     

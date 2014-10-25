@@ -20,13 +20,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
     <parent>
-    	<groupId>nl.socrates</groupId>
-        <artifactId>socrates_app</artifactId>
+    	<groupId>nl.yodo</groupId>
+        <artifactId>yodo_matching_app</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-	<artifactId>socrates_app-integtests</artifactId>
-	<name>Simple App Integration Tests</name>
+	<artifactId>yodo_matching_app-integtests</artifactId>
+	<name>Matching App Integration Tests</name>
 
     <build>
         <testResources>
@@ -49,7 +49,7 @@
 		<!-- other modules in this project -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>socrates_app-fixture</artifactId>
+			<artifactId>yodo_matching_app-fixture</artifactId>
 		</dependency>
 
         <dependency>

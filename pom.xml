@@ -19,11 +19,11 @@
 --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>nl.socrates</groupId>
-    <artifactId>socrates_app</artifactId>
+    <groupId>nl.yodo</groupId>
+    <artifactId>yodo_matching_app</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>Simple App</name>
+    <name>Matching App</name>
 
     <packaging>pom</packaging>
 
@@ -316,17 +316,17 @@
             <!-- this project's own modules -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>socrates_app-dom</artifactId>
+                <artifactId>yodo_matching_app-dom</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>socrates_app-fixture</artifactId>
+                <artifactId>yodo_matching_app-fixture</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>socrates_app-webapp</artifactId>
+                <artifactId>yodo_matching_app-webapp</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -358,4 +358,9 @@
     <module>integtests</module>
     <module>webapp</module>
   </modules>
+  <url>http://www.xtalus.nl</url>
+  <organization>
+  	<name>YIP&amp;C</name>
+  	<url>http://www.yodo.nl</url>
+  </organization>
 </project>
