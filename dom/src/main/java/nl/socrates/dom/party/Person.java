@@ -390,7 +390,7 @@ public class Person extends Party {
         }
         List<PersonProfile> tempProfileList = new ArrayList<PersonProfile>();
         for (PersonProfile e: container.allMatches(query)) {
-            if (e.getProfileTrustlevel().compareTo(getViewerRights()) <= 0) {
+            if (getViewerRights()!=null && e.getProfileTrustlevel().compareTo(getViewerRights()) <= 0) {
                  tempProfileList.add(e);
             }
         }
