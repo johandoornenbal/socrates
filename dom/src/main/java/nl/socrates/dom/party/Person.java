@@ -38,6 +38,7 @@ import org.apache.isis.applib.annotation.Disabled;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Render;
 import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.Where;
@@ -59,6 +60,8 @@ import nl.socrates.dom.JdoColumnLength;
     })
 @AutoComplete(repository=Persons.class,  action="autoComplete")
 public class Person extends Party {
+    
+    // /////// Security ////////////////////////////////////////////////
     
     public String disabled(Identifier.Type type){
         // user is owner
@@ -101,6 +104,26 @@ public class Person extends Party {
         }
         return true;
     }
+    
+    public TrustLevel getViewerRights(){      
+        QueryDefault<PersonContact> q =
+                QueryDefault.create(
+                        PersonContact.class, 
+                        "findReferringContactUserName",
+                        "ownerPerson", this,
+                        "contactUserName", container.getUser().getName());
+                if (container.allMatches(q).isEmpty()) {
+                    return null;
+                }
+                if (!container.allMatches(q).isEmpty()) {
+                    TrustLevel rights = container.firstMatch(q).getLevel();
+                    return rights;
+                }
+        return null;
+    }
+    
+    // // END SECURITY /////////////////////////////////////////////////////
+    
     
     private String initials;
 
@@ -272,7 +295,10 @@ public class Person extends Party {
     
     // //////////////////////////////////////
     @Named("Maak een profiel")
-    public List<PersonProfile> makeProfile(final String profilename, final TrustLevel level, final Blob picture){
+    public List<PersonProfile> makeProfile(
+            @Named("Profiel naam") final String profilename, 
+            @Named("Vertrouwens niveau") final TrustLevel level, 
+            @Optional @Named("Foto") final Blob picture){
         profiles.createProfile(
                 profilename, 
                 this, 
@@ -328,25 +354,56 @@ public class Person extends Party {
 //        TODO: deze werkt op een of andere manier niet goed met JDO
         setName(tb.append(getLastName()).append(",", getFirstName()).toString());
     }
+
+    // /////////////////////////////////////// Profielen
     
     // PersonProfile (Collection)
-    private SortedSet<PersonProfile> personprofiles = new TreeSet<PersonProfile>();
+//    private SortedSet<PersonProfile> personprofiles = new TreeSet<PersonProfile>();
+//    
+//    @Render(Type.EAGERLY)
+//    @Persistent(mappedBy = "person", dependentElement = "true")
+//    @Named("Profielen")
+//    public SortedSet<PersonProfile> getPersonprofiles() {
+//        return personprofiles;
+//    }
+//
+//    public void setPersonprofiles(final SortedSet<PersonProfile> personProfiles){
+//        this.personprofiles = personProfiles;
+//    }
     
+    @MemberOrder(sequence = "10")
     @Render(Type.EAGERLY)
-    @Persistent(mappedBy = "person", dependentElement = "true")
     @Named("Profielen")
-    public SortedSet<PersonProfile> getPersonprofiles() {
-        return personprofiles;
+    public List<PersonProfile> getProfilesAllowedToView() {
+        QueryDefault<PersonProfile> query =
+                QueryDefault.create(
+                        PersonProfile.class,
+                        "findProfileByPerson",
+                        "person", this);
+        // user is owner
+        if (Objects.equal(getOwner(), container.getUser().getName())){
+            return container.allMatches(query);
+        }
+        // user is admin of socrates app
+        if (container.getUser().hasRole("isisModuleSecurityRealm:socrates-admin")) {
+            return container.allMatches(query);
+        }
+        List<PersonProfile> tempProfileList = new ArrayList<PersonProfile>();
+        for (PersonProfile e: container.allMatches(query)) {
+            if (e.getProfileTrustlevel().compareTo(getViewerRights()) <= 0) {
+                 tempProfileList.add(e);
+            }
+        }
+        return tempProfileList;
+
     }
 
-    public void setPersonprofiles(final SortedSet<PersonProfile> personProfiles){
-        this.personprofiles = personProfiles;
-    }
+    // /////////////////////////////////////// Einde Profielen    
     
     private SortedSet<PersonContact> personcontacts = new TreeSet<PersonContact>();
     
     @Render(Type.EAGERLY)
-    @Persistent(mappedBy = "owner", dependentElement = "true")
+    @Persistent(mappedBy = "ownerPerson", dependentElement = "true")
     @Named("Persoonlijke contacten")
     public SortedSet<PersonContact> getPersoncontacts() {
         return personcontacts;
@@ -364,7 +421,7 @@ public class Person extends Party {
         for(PersonContact e: pcontacts.listAll()) {
             if (e.getContact() == this) {
                 Referer referer = new Referer();
-                referer.setOwner(e.getOwner());
+                referer.setOwner(e.getOwnerPerson());
                 referer.setDate(e.getDateCreatedOn());
                 referer.setLevel(e.getLevel());
                 pReferring.add(referer);
@@ -394,12 +451,11 @@ public class Person extends Party {
                 QueryDefault.create(
                     PersonContact.class, 
                     "findConfirmedContacts", 
-                    "owner", this,
+                    "ownerPerson", this,
                     "status", PersonContactStatus.CONFIRMED);        
         return container.allMatches(query);
     }
     
-
     @Inject
     PersonContacts pcontacts;
     

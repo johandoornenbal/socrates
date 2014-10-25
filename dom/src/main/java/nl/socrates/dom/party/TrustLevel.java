@@ -2,6 +2,8 @@ package nl.socrates.dom.party;
 
 import nl.socrates.dom.TitledEnum;
 
+// compare to kan gebruikt worden op enum: de eerst gedeclareerde waarde heeft de laagste ordening
+// dus compare(BANNED, OUTERCIRCLE) levert negatieve waarde
 public enum TrustLevel implements TitledEnum{
     BANNED("verbannen-niveau5"),
     OUTER_CIRCLE("buitenring-niveau4"),

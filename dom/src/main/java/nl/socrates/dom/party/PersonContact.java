@@ -38,7 +38,7 @@ import nl.socrates.dom.feedback.FeedbackItems;
             name = "findPersonContact", language = "JDOQL",
             value = "SELECT "
                     + "FROM nl.socrates.dom.party.PersonContact "
-                    + "WHERE owner == :owner"),
+                    + "WHERE ownerPerson == :owner"),
     @javax.jdo.annotations.Query(
             name = "findReferringContact", language = "JDOQL",
             value = "SELECT "
@@ -48,23 +48,40 @@ import nl.socrates.dom.feedback.FeedbackItems;
             name = "findConfirmedContacts", language = "JDOQL",
             value = "SELECT "
                     + "FROM nl.socrates.dom.party.PersonContact "
-                    + "WHERE (owner == :owner || contact == :owner) && status == :status"),                                       
+                    + "WHERE (ownerPerson == :ownerPerson || contact == :ownerPerson) && status == :status"),
+    @javax.jdo.annotations.Query(
+            name = "findReferringContactUserName", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM nl.socrates.dom.party.PersonContact "
+                    + "WHERE ownerPerson == :ownerPerson && contactUserName == :contactUserName")                
     })
 public class PersonContact extends AbstractDomainObject implements Comparable<PersonContact> {
     
-    private Person owner;
+    private String owner;
+    
+    @Hidden
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    public String getOwner() {
+        return owner;
+    }
+    
+    public void setOwner(final String owner) {
+        this.owner=owner;
+    }
+    
+    private Person ownerPerson;
     
     @javax.jdo.annotations.Column(allowsNull = "false")
     @MemberOrder(sequence = "50")
     @Named("Eigenaar")
     @Hidden(where = Where.PARENTED_TABLES)
     @Disabled
-    public Person getOwner() {
-        return owner;
+    public Person getOwnerPerson() {
+        return ownerPerson;
     }
     
-    public void setOwner (final Person owner) {
-        this.owner = owner;
+    public void setOwnerPerson (final Person owner) {
+        this.ownerPerson = owner;
     }
     
     private Person contact;
@@ -84,6 +101,17 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
     
     public List<Person> autoCompleteContact(String search) {
         return persons.findPersons(search);
+    }
+    
+    private String contactUserName;
+    @Hidden
+    @javax.jdo.annotations.Column(allowsNull = "false")
+    public String getContactUserName() {
+        return contactUserName;
+    }
+    
+    public void setContactUserName(final String username) {
+        this.contactUserName=username;
     }
     
     private TrustLevel level;
@@ -137,7 +165,7 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
     
     @Programmatic
     public void publishTestEvent() {
-        eventBusService.post(new PersonContactEvent("Notificatie opgenomen bij ", this.getOwner(), this.getContact()));
+        eventBusService.post(new PersonContactEvent("Notificatie opgenomen bij ", this.getOwnerPerson(), this.getContact()));
     }
     
     @Named("Dit contact verwijderen")
@@ -150,7 +178,7 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
                 QueryDefault.create(
                         PersonContact.class, 
                     "findPersonContact", 
-                    "owner", getOwner());
+                    "owner", getOwnerPerson());
         
         return (List<PersonContact>) container.allMatches(query);   
     }
@@ -173,12 +201,12 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
     
     @Named("Dit contact feedback geven")
     public List<FeedbackItem> addFeedback(String testfeedback){
-        fbItems.createFeedbackItem(this.getOwner(), this.getContact(), testfeedback, this);
+        fbItems.createFeedbackItem(this.getOwnerPerson(), this.getContact(), testfeedback, this);
         QueryDefault<FeedbackItem> query = 
                 QueryDefault.create(
                         FeedbackItem.class, 
                     "findFeedbackByOwnerAndReceiver", 
-                    "owner", getOwner(),
+                    "owner", getOwnerPerson(),
                     "receiver" , getContact());
         return (List<FeedbackItem>) container.allMatches(query);           
     }
@@ -186,7 +214,7 @@ public class PersonContact extends AbstractDomainObject implements Comparable<Pe
     @Override
     public int compareTo(PersonContact o) {
         return ComparisonChain.start()
-                .compare(this.getOwner(), o.getOwner())
+                .compare(this.getOwnerPerson(), o.getOwnerPerson())
                 .compare(this.getContact(), o.getContact())
                 .compare(this.getCreatedOn(), o.getCreatedOn())
                 .compare(this.getLevel(), o.getLevel())

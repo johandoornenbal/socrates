@@ -27,12 +27,14 @@ public class PersonContacts extends SocratesDomainService<PersonContact>{
     @Named("Voeg contact toe")
     @NotInServiceMenu
     public PersonContact createContact(
-        final Person owner,
+        final Person ownerperson,
         @Named("Contact") final Person contact
         ) {
         final PersonContact pc = container.newTransientInstance(PersonContact.class);
-        pc.setOwner(owner);
+        pc.setOwner(container.getUser().getName());
+        pc.setOwnerPerson(ownerperson);
         pc.setContact(contact);
+        pc.setContactUserName(contact.getOwner());
         pc.setCreatedOn(clockService.nowAsLocalDateTime());
         pc.setStatus(PersonContactStatus.UNCONFIRMED);
         container.persistIfNotAlready(pc);

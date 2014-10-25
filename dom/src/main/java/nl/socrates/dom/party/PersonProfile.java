@@ -40,7 +40,8 @@ import org.apache.isis.applib.value.Blob;
             name = "findProfileByPerson", language = "JDOQL",
             value = "SELECT "
                     + "FROM nl.socrates.dom.person.PersonProfile "
-                    + "WHERE person == :person"),
+                    + "WHERE person == :person "
+                    + "ORDER BY profileTrustlevel"),
     @javax.jdo.annotations.Query(        
             name = "findProfileByPersonAndLevel", language = "JDOQL",
             value = "SELECT "
@@ -64,6 +65,14 @@ public class PersonProfile extends AbstractDomainObject implements Comparable<Pe
         return "Not allowed to modify / Niet toegestaan te wijzigen";
     }
     
+    //Erg onsympathieke methode want je ziet wel de lijst, maar niet het profiel op person
+    //TODO: of de lijst op Person zo maken dat hij alleen dat toont wat bij TrustLevel past lijkt me beter
+//    public Boolean hidden(){
+            // if ... bla bla bla 
+//        return true;
+//    }
+    
+    // owner = getUser().getName() op het moment van aanmaken
     private String owner;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
@@ -185,9 +194,9 @@ public class PersonProfile extends AbstractDomainObject implements Comparable<Pe
     @Override
     public int compareTo(PersonProfile other) {
         return ComparisonChain.start()
+                .compare(this.getProfileTrustlevel(), other.getProfileTrustlevel())
                 .compare(this.getPerson(), other.getPerson())
                 .compare(this.getProfilename(), other.getProfilename())
-                .compare(this.getProfileTrustlevel(), other.getProfileTrustlevel())
                 .result();
     }
     

@@ -133,7 +133,7 @@ public class FeedbackItem extends SocratesMutableObject<FeedbackItem> implements
                 QueryDefault.create(
                         FeedbackItem.class, 
                     "findFeedbackByOwnerAndReceiver", 
-                    "owner", getPersoncontact().getOwner(),
+                    "owner", getPersoncontact().getOwnerPerson(),
                     "receiver" , getPersoncontact().getContact());
         
         return (List<FeedbackItem>) container.allMatches(query);   
