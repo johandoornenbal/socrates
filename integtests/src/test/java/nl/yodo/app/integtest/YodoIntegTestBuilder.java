@@ -1,14 +1,13 @@
-package nl.socrates.app.integtest;
+package nl.yodo.app.integtest;
 
 import org.apache.isis.core.commons.config.IsisConfiguration;
 import org.apache.isis.core.integtestsupport.IsisSystemForTest;
 import org.apache.isis.objectstore.jdo.datanucleus.DataNucleusPersistenceMechanismInstaller;
 import org.apache.isis.objectstore.jdo.datanucleus.IsisConfigurationForJdoIntegTests;
 
-public class SocratesIntegTestBuilder extends IsisSystemForTest.Builder {
-
-    public SocratesIntegTestBuilder() {
-
+public class YodoIntegTestBuilder extends IsisSystemForTest.Builder {
+    
+    public YodoIntegTestBuilder() {
         withLoggingAt(org.apache.log4j.Level.INFO);
         with(testConfiguration());
         with(new DataNucleusPersistenceMechanismInstaller());
@@ -28,7 +27,7 @@ public class SocratesIntegTestBuilder extends IsisSystemForTest.Builder {
         // withServices(
         // new FakeExcelService());
     }
-
+    
     private static IsisConfiguration testConfiguration() {
         final IsisConfigurationForJdoIntegTests testConfiguration = new IsisConfigurationForJdoIntegTests();
         testConfiguration.addRegisterEntitiesPackagePrefix("nl");
@@ -66,4 +65,6 @@ public class SocratesIntegTestBuilder extends IsisSystemForTest.Builder {
     // return null;
     // }
     // }
+    
+    
 }

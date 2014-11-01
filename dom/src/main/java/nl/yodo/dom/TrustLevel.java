@@ -1,15 +1,14 @@
-package nl.socrates.dom.party;
+package nl.yodo.dom;
 
-import nl.socrates.dom.TitledEnum;
 
 // compare to kan gebruikt worden op enum: de eerst gedeclareerde waarde heeft de laagste ordening
 // dus compare(BANNED, OUTERCIRCLE) levert negatieve waarde
 public enum TrustLevel implements TitledEnum{
-    BANNED("verbannen-niveau5"),
-    OUTER_CIRCLE("buitenring-niveau4"),
-    ENTRY_LEVEL("instap-niveau3"),
-    INNER_CIRCLE("binnenring-niveau2"),
-    INTIMATE("intimi-niveau1");
+    BANNED("verbannen-niveau (buitenste (cirkel 5)"),
+    OUTER_CIRCLE("buitenring-niveau (cirkel 4)"),
+    ENTRY_LEVEL("instap-niveau (middelste cirkel 3)"),
+    INNER_CIRCLE("binnenring-niveau (cirkel 2)"),
+    INTIMATE("intimi-niveau (binnenste circle 1)");
 
     private String title;
     

@@ -25,7 +25,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import nl.socrates.dom.TitledEnum;
+import nl.yodo.dom.TitledEnum;
 import nl.socrates.dom.utils.StringUtils;
 
 public enum CommunicationChannelType implements TitledEnum {

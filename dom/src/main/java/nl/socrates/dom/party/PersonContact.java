@@ -28,6 +28,7 @@ import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.services.eventbus.EventBusService;
 
+import nl.yodo.dom.TrustLevel;
 import nl.socrates.dom.feedback.FeedbackItem;
 import nl.socrates.dom.feedback.FeedbackItems;
 

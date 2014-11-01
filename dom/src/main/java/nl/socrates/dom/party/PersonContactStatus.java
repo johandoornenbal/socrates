@@ -1,6 +1,6 @@
 package nl.socrates.dom.party;
 
-import nl.socrates.dom.TitledEnum;
+import nl.yodo.dom.TitledEnum;
 
 public enum PersonContactStatus implements TitledEnum {
     UNCONFIRMED("niet bevestigd"),

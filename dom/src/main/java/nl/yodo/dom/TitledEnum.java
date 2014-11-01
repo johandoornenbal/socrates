@@ -16,7 +16,9 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package nl.socrates.dom;
+package nl.yodo.dom;
+
+import nl.socrates.dom.Titled;
 
 
 /**

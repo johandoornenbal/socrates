@@ -12,6 +12,8 @@ import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.value.Blob;
 
+import nl.yodo.dom.TrustLevel;
+
 @DomainService(repositoryFor=PersonProfile.class)
 public class PersonProfiles extends AbstractFactoryAndRepository {
     

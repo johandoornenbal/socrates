@@ -11,6 +11,8 @@ import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.Where;
 
+import nl.yodo.dom.TrustLevel;
+
 @Immutable
 public class Referer extends AbstractDomainObject implements Comparable<Referer>{
     

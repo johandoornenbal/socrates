@@ -6,11 +6,11 @@ import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;
 
-import nl.socrates.dom.SocratesDomainService;
+import nl.yodo.dom.YodoDomainService;
 
 @DomainService(menuOrder = "10", repositoryFor = Secobject.class)
 @Named("Pruts")
-public class Secobjects extends SocratesDomainService<Secobject>{
+public class Secobjects extends YodoDomainService<Secobject>{
     
     public Secobjects(){
         super(Secobjects.class, Secobject.class);

@@ -46,6 +46,7 @@ import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.util.TitleBuffer;
 import org.apache.isis.applib.value.Blob;
 
+import nl.yodo.dom.TrustLevel;
 import nl.socrates.dom.JdoColumnLength;
 
 

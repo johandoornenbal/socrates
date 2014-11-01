@@ -2,12 +2,9 @@ package nl.yodo.dom.pruts;
 
 import javax.jdo.annotations.InheritanceStrategy;
 
-import com.google.common.base.Objects;
-
-import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Bookmarkable;
 
-import nl.socrates.dom.party.TrustLevel;
+import nl.yodo.dom.TrustLevel;
 import nl.yodo.dom.YodoSecureMutableObject;
 
 @javax.jdo.annotations.PersistenceCapable
@@ -41,19 +38,12 @@ public class Secobject extends YodoSecureMutableObject<Secobject> {
         this.testLevelOuter=string;
     }
     
+    /**
+     * Show to level OUTER_CIRCLE or higher
+     * @return
+     */
     public boolean hideTestLevelOuter() {
-        // user is owner
-        if (Objects.equal(getOwner(), container.getUser().getName())){
-            return false;
-        }
-        // user is admin of app
-        if (container.getUser().hasRole("isisModuleSecurityRealm:socrates-admin")) {
-            return false;
-        }
-        if (super.getViewerRights()!=null && TrustLevel.OUTER_CIRCLE.compareTo(super.getViewerRights())<=0){
-            return false;
-        }
-        return true;
+        return super.allowedTrustLevel(TrustLevel.OUTER_CIRCLE);
     }    
     
     private String testLevelInstap;
@@ -67,19 +57,12 @@ public class Secobject extends YodoSecureMutableObject<Secobject> {
         this.testLevelInstap=string;
     }
     
+    /**
+     * Show to level ENTRY_LEVEL or higher
+     * @return
+     */   
     public boolean hideTestLevelInstap() {
-        // user is owner
-        if (Objects.equal(getOwner(), container.getUser().getName())){
-            return false;
-        }
-        // user is admin of app
-        if (container.getUser().hasRole("isisModuleSecurityRealm:socrates-admin")) {
-            return false;
-        }
-        if (super.getViewerRights()!=null && TrustLevel.ENTRY_LEVEL.compareTo(super.getViewerRights())<=0){
-            return false;
-        }
-        return true;
+        return super.allowedTrustLevel(TrustLevel.ENTRY_LEVEL);
     }    
     
     private String testLevelInner;
@@ -93,19 +76,12 @@ public class Secobject extends YodoSecureMutableObject<Secobject> {
         this.testLevelInner=string;
     }
 
+    /**
+     * Show to level INNER_CIRCLE or higher
+     * @return
+     */
     public boolean hideTestLevelInner() {
-        // user is owner
-        if (Objects.equal(getOwner(), container.getUser().getName())){
-            return false;
-        }
-        // user is admin of app
-        if (container.getUser().hasRole("isisModuleSecurityRealm:socrates-admin")) {
-            return false;
-        }
-        if (super.getViewerRights()!=null && TrustLevel.INNER_CIRCLE.compareTo(super.getViewerRights())<=0){
-            return false;
-        }
-        return true;
+        return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
     
     
@@ -120,23 +96,12 @@ public class Secobject extends YodoSecureMutableObject<Secobject> {
         this.testLevelIntimate=string;
     }
 
+    /**
+     * Show only to level INTIMATE
+     * @return
+     */
     public boolean hideTestLevelIntimate() {
-        // user is owner
-        if (Objects.equal(getOwner(), container.getUser().getName())){
-            return false;
-        }
-        // user is admin of app
-        if (container.getUser().hasRole("isisModuleSecurityRealm:socrates-admin")) {
-            return false;
-        }
-        if (super.getViewerRights()!=null && TrustLevel.INTIMATE.compareTo(super.getViewerRights())<=0){
-            return false;
-        }
-        return true;
+        return super.allowedTrustLevel(TrustLevel.INTIMATE);
     }
-
-   
-    @javax.inject.Inject
-    private DomainObjectContainer container;
 
 }
