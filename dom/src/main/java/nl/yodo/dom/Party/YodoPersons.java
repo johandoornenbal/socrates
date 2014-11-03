@@ -1,18 +1,16 @@
 package nl.yodo.dom.Party;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javassist.expr.NewArray;
 
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionSemantics;
+import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;
-import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.query.QueryDefault;
-
 import nl.socrates.dom.utils.StringUtils;
 import nl.yodo.dom.YodoDomainService;
 
@@ -69,14 +67,44 @@ public class YodoPersons extends YodoDomainService<YodoPerson> {
         return allInstances();
     }
     
-    public List<YodoPersonalContact> personsReferringToMe() {
+//    public List<YodoPerson> personsReferringToMe1() {
+//        QueryDefault<YodoPersonalContact> query =
+//                QueryDefault.create(
+//                        YodoPersonalContact.class, 
+//                        "findYodoPersonalContactReferringToMe", 
+//                        "contact", currentUserName());
+//        List<YodoPerson> tempList = new ArrayList<YodoPerson>();
+//        for (YodoPersonalContact e: container.allMatches(query)) {
+//            QueryDefault<YodoPerson> q =
+//                    QueryDefault.create(
+//                            YodoPerson.class, 
+//                            "findYodoPersonUnique", 
+//                            "ownedBy", e.getOwnedBy());
+//            tempList.add(container.firstMatch(q));
+//        }
+//        return tempList;
+//    }
+ 
+    public List<Referral> personsReferringToMe() {
         QueryDefault<YodoPersonalContact> query =
                 QueryDefault.create(
                         YodoPersonalContact.class, 
                         "findYodoPersonalContactReferringToMe", 
-                        "contact", currentUserName());       
-        return container.allMatches(query);
-    }
+                        "contact", currentUserName());
+        List<Referral> tempList = new ArrayList<Referral>();
+        for (YodoPersonalContact e: container.allMatches(query)) {
+            QueryDefault<YodoPerson> q =
+                    QueryDefault.create(
+                            YodoPerson.class, 
+                            "findYodoPersonUnique", 
+                            "ownedBy", e.getOwnedBy());
+            final Referral ref = new Referral();
+            ref.setReferrer(container.firstMatch(q));
+            ref.setTrustLevel(e.getLevel());
+            tempList.add(ref);
+        }
+        return tempList;
+    }    
     
     public List<YodoPerson> findYodoPersons(final String lastname) {
         return allMatches("matchPersonByLastName", "lastName", StringUtils.wildcardToCaseInsensitiveRegex(lastname));
