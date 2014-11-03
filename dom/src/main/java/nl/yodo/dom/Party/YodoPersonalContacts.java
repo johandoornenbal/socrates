@@ -12,8 +12,10 @@ import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.query.QueryDefault;
 
+import nl.yodo.dom.TrustLevel;
 import nl.yodo.dom.YodoDomainService;
 
 @DomainService(menuOrder = "13", repositoryFor = YodoPersonalContact.class)
@@ -30,7 +32,7 @@ public class YodoPersonalContacts extends YodoDomainService<YodoPersonalContact>
                 QueryDefault.create(
                         YodoPersonalContact.class, 
                     "findYodoPersonalContact", 
-                    "owner", container.getUser().getName());
+                    "ownedBy", currentUserName());
         return allMatches(query);
     }
     
@@ -39,12 +41,7 @@ public class YodoPersonalContacts extends YodoDomainService<YodoPersonalContact>
     @Named("Personal contact maken")
     public YodoPersonalContact newPersonalContact(
             final @Named("Contact") YodoPerson contactPerson) {
-        final YodoPersonalContact contact = newTransientInstance(YodoPersonalContact.class);
-        contact.setContactPerson(contactPerson);
-        contact.setContact(contactPerson.getOwner());
-        contact.setOwner(container.getUser().getName());
-        persist(contact);
-        return contact;
+        return newPersonalContact(contactPerson, currentUserName()); // see region>helpers
     }
     
     public List<YodoPerson> autoComplete0NewPersonalContact(final String search) {
@@ -57,7 +54,7 @@ public class YodoPersonalContacts extends YodoDomainService<YodoPersonalContact>
             return false;
         }
         // do not show on own personinstance - you cannot add yourself as personal contact
-        if (contactPerson.getOwner().equals(container.getUser().getName())) {
+        if (contactPerson.getOwnedBy().equals(currentUserName())) {
             return true;
         }
         // do not show when already contacted
@@ -65,8 +62,8 @@ public class YodoPersonalContacts extends YodoDomainService<YodoPersonalContact>
                 QueryDefault.create(
                         YodoPersonalContact.class, 
                     "findYodoPersonalContactUniqueContact", 
-                    "owner", container.getUser().getName(),
-                    "contact", contactPerson.getOwner());
+                    "ownedBy", currentUserName(),
+                    "contact", contactPerson.getOwnedBy());
         return container.firstMatch(query) != null?
         true  : false;        
     }
@@ -77,7 +74,7 @@ public class YodoPersonalContacts extends YodoDomainService<YodoPersonalContact>
      */
     public String validateNewPersonalContact(final YodoPerson contactPerson) {
         
-        if (Objects.equal(contactPerson.getOwner(), container.getUser().getName())) {
+        if (Objects.equal(contactPerson.getOwnedBy(), container.getUser().getName())) {
             return "Contact maken met jezelf heeft geen zin.";
         }
         
@@ -85,12 +82,46 @@ public class YodoPersonalContacts extends YodoDomainService<YodoPersonalContact>
                 QueryDefault.create(
                         YodoPersonalContact.class, 
                     "findYodoPersonalContactUniqueContact", 
-                    "owner", container.getUser().getName(),
-                    "contact", contactPerson.getOwner());
+                    "ownedBy", currentUserName(),
+                    "contact", contactPerson.getOwnedBy());
         return container.firstMatch(query) != null?
         "Dit contact heb je al gemaakt. Pas het eventueel aan in plaats van een nieuwe te maken."        
         :null;
     }
+    
+    // Region>helpers //////////////////////////// 
+    
+    private String currentUserName() {
+        return container.getUser().getName();
+    }
+    
+    @Programmatic //userName can now also be set by fixtures
+    public YodoPersonalContact newPersonalContact(
+            final @Named("Contact") YodoPerson contactPerson,
+            final String userName) {
+        final YodoPersonalContact contact = newTransientInstance(YodoPersonalContact.class);
+        contact.setContactPerson(contactPerson);
+        contact.setContact(contactPerson.getOwnedBy());
+        contact.setOwnedBy(userName);
+        persist(contact);
+        return contact;
+    }
+
+    @Programmatic //userName and trustLevel can now also be set by fixtures
+    public YodoPersonalContact newPersonalContact(
+            final @Named("Contact") YodoPerson contactPerson,
+            final String userName,
+            final TrustLevel trustLevel) {
+        final YodoPersonalContact contact = newTransientInstance(YodoPersonalContact.class);
+        contact.setContactPerson(contactPerson);
+        contact.setContact(contactPerson.getOwnedBy());
+        contact.setOwnedBy(userName);
+        contact.setLevel(trustLevel);
+        persist(contact);
+        return contact;
+    }
+    
+    // Region>injections ////////////////////////////  
     
     @javax.inject.Inject
     private DomainObjectContainer container;

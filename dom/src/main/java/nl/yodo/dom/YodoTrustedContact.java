@@ -33,17 +33,17 @@ import org.apache.isis.applib.query.QueryDefault;
             name = "findYodoTrustedContact", language = "JDOQL",
             value = "SELECT "
                     + "FROM nl.yodo.dom.YodoTrustedContact "
-                    + "WHERE owner == :owner"),
+                    + "WHERE ownedBy == :ownedBy"),
     @javax.jdo.annotations.Query(
             name = "findYodoTrustedUniqueContact", language = "JDOQL",
             value = "SELECT "
                     + "FROM nl.yodo.dom.YodoTrustedContact "
-                    + "WHERE owner == :owner && contact == :contact")
+                    + "WHERE ownedBy == :ownedBy && contact == :contact")
 })
 @Bookmarkable
 public class YodoTrustedContact extends YodoSecureMutableObject<YodoTrustedContact> {
     public YodoTrustedContact() {
-        super("owner");
+        super("ownedBy");
     }
     
     /**
@@ -52,7 +52,7 @@ public class YodoTrustedContact extends YodoSecureMutableObject<YodoTrustedConta
      */
     public boolean hidden() {
         // user is owner
-        if (Objects.equal(getOwner(), container.getUser().getName())){
+        if (Objects.equal(getOwnedBy(), container.getUser().getName())){
             return false;
         }
         // user is admin of app
@@ -67,7 +67,7 @@ public class YodoTrustedContact extends YodoSecureMutableObject<YodoTrustedConta
      */
     @Hidden(where=Where.OBJECT_FORMS)
     public String getEigenaar() {
-        return getOwner();
+        return getOwnedBy();
     }
     
     /**
@@ -115,7 +115,7 @@ public class YodoTrustedContact extends YodoSecureMutableObject<YodoTrustedConta
                 QueryDefault.create(
                         YodoTrustedContact.class, 
                     "findYodoTrustedContact", 
-                    "owner", getOwner());
+                    "ownedBy", getOwnedBy());
         
         return (List<YodoTrustedContact>) container.allMatches(query);   
     }
@@ -130,7 +130,7 @@ public class YodoTrustedContact extends YodoSecureMutableObject<YodoTrustedConta
      */
     public boolean hideDelete() {
         // user is owner
-        if (Objects.equal(getOwner(), container.getUser().getName())){
+        if (Objects.equal(getOwnedBy(), currentUserName())){
             return false;
         }
         // user is admin of app
@@ -140,6 +140,12 @@ public class YodoTrustedContact extends YodoSecureMutableObject<YodoTrustedConta
         return true;
     }
     
+    
+    // Region //// helpers
+    
+    private String currentUserName() {
+        return container.getUser().getName();
+    }
     
     // Region //// injections ///////////////////////////////////
     @javax.inject.Inject

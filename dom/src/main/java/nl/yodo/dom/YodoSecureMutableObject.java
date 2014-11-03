@@ -68,7 +68,7 @@ public abstract class YodoSecureMutableObject<T extends YodoDomainObject<T>>
      */
     public String disabled(Identifier.Type type){
         // user is owner
-        if (Objects.equal(getOwner(), container.getUser().getName())) {
+        if (Objects.equal(getOwnedBy(), container.getUser().getName())) {
             return null;
         }
         // user is admin of socrates app
@@ -81,21 +81,21 @@ public abstract class YodoSecureMutableObject<T extends YodoDomainObject<T>>
     }
 
     
-    private String owner;
+    private String ownedBy;
     
     @Hidden
     @javax.jdo.annotations.Column(allowsNull = "false")
     @Disabled
-    public String getOwner() {
-        return owner;
+    public String getOwnedBy() {
+        return ownedBy;
     }
     
-    public void setOwner(final String owner) {
-        this.owner=owner;
+    public void setOwnedBy(final String owner) {
+        this.ownedBy=owner;
     }
     
     public void changeOwner(final String owner) {
-        this.setOwner(owner);
+        this.setOwnedBy(owner);
     }
     
     public boolean hideChangeOwner(final String owner) {
@@ -116,7 +116,7 @@ public abstract class YodoSecureMutableObject<T extends YodoDomainObject<T>>
                 QueryDefault.create(
                         YodoTrustedContact.class, 
                         "findYodoTrustedUniqueContact",
-                        "owner", this.getOwner(),
+                        "ownedBy", this.getOwnedBy(),
                         "contact", container.getUser().getName());
                 if (container.allMatches(q).isEmpty()) {
                     return null;
@@ -144,7 +144,7 @@ public abstract class YodoSecureMutableObject<T extends YodoDomainObject<T>>
     @Hidden
     public boolean allowedTrustLevel(final TrustLevel trustlevel) {
         // user is owner
-        if (Objects.equal(getOwner(), container.getUser().getName())){
+        if (Objects.equal(getOwnedBy(), container.getUser().getName())){
             return false;
         }
         // user is admin of app

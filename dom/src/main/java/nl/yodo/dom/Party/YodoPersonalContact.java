@@ -16,12 +16,17 @@ import nl.yodo.dom.YodoTrustedContact;
             name = "findYodoPersonalContactUniqueContact", language = "JDOQL",
             value = "SELECT "
                     + "FROM nl.yodo.dom.Party.YodoPersonalContact "
-                    + "WHERE owner == :owner && contact == :contact")   ,
+                    + "WHERE ownedBy == :ownedBy && contact == :contact")   ,
     @javax.jdo.annotations.Query(
             name = "findYodoPersonalContact", language = "JDOQL",
             value = "SELECT "
                     + "FROM nl.yodo.dom.Party.YodoPersonalContact "
-                    + "WHERE owner == :owner")                    
+                    + "WHERE ownedBy == :ownedBy"),
+    @javax.jdo.annotations.Query(
+            name = "findYodoPersonalContactReferringToMe", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM nl.yodo.dom.Party.YodoPersonalContact "
+                    + "WHERE contact == :contact")                    
 })
 public class YodoPersonalContact extends YodoTrustedContact {
     

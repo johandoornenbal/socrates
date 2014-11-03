@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Programmatic;
 
 import nl.yodo.dom.YodoDomainService;
 
@@ -20,17 +21,23 @@ public class Secobjects extends YodoDomainService<Secobject>{
         return allInstances();
     }
     
+    public Secobject newSecobject (final String name) {
+        return newSecobject(name, container.getUser().getName());
+    }
+    
+    @Programmatic
     public Secobject newSecobject(
-            final String name) {
+            final String name,
+            final String userName) {
         final Secobject obj = newTransientInstance(Secobject.class);
         obj.setName(name);
-        obj.setOwner(container.getUser().getName());
+        obj.setOwnedBy(userName);
         obj.setTestLevelOuter("Outer test");
         obj.setTestLevelInstap("Instap Test");
         obj.setTestLevelInner("Inner test");
         obj.setTestLevelIntimate("Intimate test");
         persist(obj);
-        return obj;
+        return obj;        
     }
     
     @javax.inject.Inject

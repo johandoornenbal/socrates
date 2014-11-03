@@ -5,6 +5,7 @@ import javax.jdo.annotations.InheritanceStrategy;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.MultiLine;
 import org.apache.isis.applib.annotation.Where;
 
@@ -17,7 +18,7 @@ import nl.yodo.dom.TrustLevel;
             name = "findYodoPersonUnique", language = "JDOQL",
             value = "SELECT "
                     + "FROM nl.yodo.dom.Party.YodoPerson "
-                    + "WHERE owner == :owner"),
+                    + "WHERE ownedBy == :ownedBy"),
     @javax.jdo.annotations.Query(
             name = "matchPersonByLastName", language = "JDOQL",
             value = "SELECT "
@@ -27,9 +28,14 @@ import nl.yodo.dom.TrustLevel;
 @AutoComplete(repository=YodoPersons.class,  action="autoComplete")
 public class YodoPerson extends YodoParty {
     
+    public String title() {
+        return this.getLastName() + ", " + this.getFirstName() + " " + this.getMiddleName();
+    }
+    
     private String firstName;
     
-    @javax.jdo.annotations.Column(allowsNull = "true")
+    @MemberOrder(sequence = "10")
+    @javax.jdo.annotations.Column(allowsNull = "false")
     public String getFirstName() {
         return firstName;
     }
@@ -38,8 +44,21 @@ public class YodoPerson extends YodoParty {
         this.firstName = fn;
     }
     
+    private String middleName;
+    
+    @MemberOrder(sequence = "20")
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    public String getMiddleName() {
+        return middleName;
+    }
+    
+    public void setMiddleName(final String mn) {
+        this.middleName = mn;
+    }
+    
     private String lastName;
     
+    @MemberOrder(sequence = "30")
     @javax.jdo.annotations.Column(allowsNull = "false")
     public String getLastName() {
         return lastName;
@@ -53,12 +72,50 @@ public class YodoPerson extends YodoParty {
         setLastName(ln);
         container.informUser("Bijgewerkt nog niet persisted!");
     }
+
+    private String forOuterContactEyes;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @MultiLine
+    @Hidden(where=Where.ALL_TABLES)
+    @MemberOrder(sequence = "40")
+    public String getForOuterContactEyes() {
+        return forOuterContactEyes;
+    }
+    
+    public void setForOuterContactEyes(final String string) {
+        this.forOuterContactEyes = string;
+    }
+    
+    public boolean hideForOuterContactEyes() {
+        return super.allowedTrustLevel(TrustLevel.OUTER_CIRCLE);
+    }
+       
+    private String forNormalContactEyes;
+    
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @MultiLine
+    @Hidden(where=Where.ALL_TABLES)
+    @MemberOrder(sequence = "50")
+    public String getForNormalContactEyes() {
+        return forNormalContactEyes;
+    }
+    
+    public void setForNormalContactEyes(final String string) {
+        this.forNormalContactEyes = string;
+    }
+    
+    public boolean hideForNormalContactEyes() {
+        return super.allowedTrustLevel(TrustLevel.ENTRY_LEVEL);
+    }
+    
     
     private String notForAllEyes;
     
     @javax.jdo.annotations.Column(allowsNull = "true")
     @MultiLine
     @Hidden(where=Where.ALL_TABLES)
+    @MemberOrder(sequence = "60")
     public String getNotForAllEyes() {
         return notForAllEyes;
     }
@@ -66,17 +123,12 @@ public class YodoPerson extends YodoParty {
     public void setNotForAllEyes(final String string) {
         this.notForAllEyes = string;
     }
-    
+
     public boolean hideNotForAllEyes() {
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
     
-    // TESTS /////////////////////////////////////////////////////
-    
-    public String title() {
-        return this.getLastName() + ", " + this.getFirstName();
-    }
-    
+    // TESTS /////////////////////////////////////////////////////    
     public void updating() {
         container.informUser("Nog niet persisted - TEST!");
     }

@@ -15,7 +15,7 @@ import nl.yodo.dom.YodoSecureMutableObject;
 public abstract class YodoParty extends YodoSecureMutableObject<YodoParty> {
     
     public YodoParty() {
-        super("owner");
+        super("ownedBy");
     }
     
     private String uniquePartyId;
