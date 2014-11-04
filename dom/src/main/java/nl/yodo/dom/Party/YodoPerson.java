@@ -137,6 +137,7 @@ public class YodoPerson extends YodoParty {
     
     // SecObjects test 
     
+    @MemberOrder(sequence = "100")
     @Render(Type.EAGERLY)
     @Named("Test met 'veilige' objecten")
     public List<Secobject> getMyObjects() {

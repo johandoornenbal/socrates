@@ -3,18 +3,29 @@ package nl.yodo.dom.Party;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionSemantics;
 import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.NotContributed;
+import org.apache.isis.applib.annotation.NotContributed.As;
+import org.apache.isis.applib.annotation.NotInServiceMenu;
 import org.apache.isis.applib.annotation.Optional;
 import org.apache.isis.applib.annotation.Programmatic;
+import org.apache.isis.applib.annotation.Render;
+import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.query.QueryDefault;
+
 import nl.socrates.dom.utils.StringUtils;
 import nl.yodo.dom.YodoDomainService;
 
-@DomainService(menuOrder = "13", repositoryFor = YodoPerson.class)
+@DomainService(menuOrder = "10", repositoryFor = YodoPerson.class)
 @Named("Pruts Personen")
 public class YodoPersons extends YodoDomainService<YodoPerson> {
     
@@ -63,9 +74,42 @@ public class YodoPersons extends YodoDomainService<YodoPerson> {
         
     }
     
+    @MemberOrder(sequence="5")
+    public List<YodoPerson> thisIsYou() {
+        QueryDefault<YodoPerson> query = 
+                QueryDefault.create(
+                        YodoPerson.class, 
+                    "findYodoPersonUnique", 
+                    "ownedBy", currentUserName());          
+        return allMatches(query);
+    }
+    
+    @MemberOrder(sequence="10")
     public List<YodoPerson> allPersons() {
         return allInstances();
     }
+    
+    //region > otherPersons (contributed collection)
+    @MemberOrder(sequence="110")
+    @NotInServiceMenu
+    @ActionSemantics(Of.SAFE)
+    @NotContributed(As.ACTION)
+    @Render(Type.EAGERLY)
+    @Named("Alle andere personen")
+    public List<YodoPerson> AllOtherPersons(final YodoPerson personMe) {
+        final List<YodoPerson> allPersons = allPersons();
+        return Lists.newArrayList(Iterables.filter(allPersons, excluding(personMe)));
+    }
+
+    private static Predicate<YodoPerson> excluding(final YodoPerson person) {
+        return new Predicate<YodoPerson>() {
+            @Override
+            public boolean apply(YodoPerson input) {
+                return input != person;
+            }
+        };
+    }
+    //endregion
     
 //    public List<YodoPerson> personsReferringToMe1() {
 //        QueryDefault<YodoPersonalContact> query =
@@ -85,7 +129,13 @@ public class YodoPersons extends YodoDomainService<YodoPerson> {
 //        return tempList;
 //    }
  
-    public List<Referral> personsReferringToMe() {
+    @MemberOrder(sequence="120")
+    @NotInServiceMenu
+    @ActionSemantics(Of.SAFE)
+    @NotContributed(As.ACTION)
+    @Render(Type.EAGERLY)
+    @Named("Personen die naar mij verwijzen")
+    public List<Referral> personsReferringToMe(final YodoPerson personMe) {
         QueryDefault<YodoPersonalContact> query =
                 QueryDefault.create(
                         YodoPersonalContact.class, 
@@ -106,6 +156,7 @@ public class YodoPersons extends YodoDomainService<YodoPerson> {
         return tempList;
     }    
     
+    @MemberOrder(sequence="100")
     public List<YodoPerson> findYodoPersons(final String lastname) {
         return allMatches("matchPersonByLastName", "lastName", StringUtils.wildcardToCaseInsensitiveRegex(lastname));
     }
