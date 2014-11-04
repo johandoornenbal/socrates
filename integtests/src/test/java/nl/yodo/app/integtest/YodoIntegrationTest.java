@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.apache.isis.core.integtestsupport.IntegrationTestAbstract;
 import org.apache.isis.core.integtestsupport.scenarios.ScenarioExecutionForIntegration;
 
-import nl.yodo.fixture.YodoPersonTestsFixture;
+import nl.yodo.fixture.YodoTestsFixtures;
 
 /**
  * Base class for integration tests.
@@ -28,7 +28,7 @@ public abstract class YodoIntegrationTest extends IntegrationTestAbstract {
     
     @Before
     public void setUpData() throws Exception {
-        scenarioExecution().install(new YodoPersonTestsFixture());
+        scenarioExecution().install(new YodoTestsFixtures());
     }
 
 }

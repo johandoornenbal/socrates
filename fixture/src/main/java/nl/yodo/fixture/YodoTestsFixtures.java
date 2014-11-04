@@ -9,9 +9,9 @@ import nl.yodo.fixture.party.PersonForTest4;
 import nl.yodo.fixture.party.YodoPersonsTeardown;
 import nl.yodo.fixture.pruts.SecObjectsForTest;
 
-public class YodoPersonTestsFixture extends FixtureScript {
+public class YodoTestsFixtures extends FixtureScript {
     
-    public YodoPersonTestsFixture() {
+    public YodoTestsFixtures() {
         super(null, "yodopersontests-fixture");
     }
 

@@ -17,6 +17,19 @@ public class YodoSecObjectTest extends YodoIntegrationTest {
     @Inject
     Secobjects secobjects;
     
+    public static class TestSecObject extends YodoSecObjectTest {
+        
+        Secobject t1;
+        
+        @Test
+        public void valuesSet() throws Exception {
+            t1=secobjects.allSecobjects().get(0);
+            assertThat(t1.getName(), is("TestObject1 van test1"));
+            assertThat(t1.getOwnedBy(), is("test1"));
+            assertThat(t1.getTestLevelInner(), is("Inner test"));
+        }       
+    }
+    
     public static class NewSecObject extends YodoSecObjectTest {
         
         Secobject t1;
@@ -27,7 +40,7 @@ public class YodoSecObjectTest extends YodoIntegrationTest {
             t1=secobjects.newSecobject("test");
             t1.setOwnedBy("test1");
             t1.setTestLevelInner("test voor innercircle");
-            t2=secobjects.allSecobjects().get(0); 
+            t2=secobjects.allSecobjects().get(8); 
         }
 
     
