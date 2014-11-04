@@ -40,7 +40,8 @@ public class YodoSecObjectTest extends YodoIntegrationTest {
             t1=secobjects.newSecobject("test");
             t1.setOwnedBy("test1");
             t1.setTestLevelInner("test voor innercircle");
-            t2=secobjects.allSecobjects().get(8); 
+            Integer maxindex = secobjects.allSecobjects().size() - 1;
+            t2=secobjects.allSecobjects().get(maxindex); 
         }
 
     
@@ -50,6 +51,7 @@ public class YodoSecObjectTest extends YodoIntegrationTest {
             assertThat(t1.getOwnedBy(), is("test1"));
             assertThat(t1.getTestLevelInner(), is("test voor innercircle"));
             assertThat(t2.getName(), is("test"));
+            assertThat(t2,is(t1));
         }
     }
 
