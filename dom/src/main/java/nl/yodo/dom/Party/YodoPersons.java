@@ -154,7 +154,19 @@ public class YodoPersons extends YodoDomainService<YodoPerson> {
             tempList.add(ref);
         }
         return tempList;
-    }    
+    }  
+    
+    public boolean hidePersonsReferringToMe(final YodoPerson personMe) {
+        QueryDefault<YodoPerson> query = 
+                QueryDefault.create(
+                        YodoPerson.class, 
+                    "findYodoPersonUnique", 
+                    "ownedBy", currentUserName());        
+        return container.firstMatch(query).equals(personMe)?
+        false        
+        :true;        
+    }
+    
     
     @MemberOrder(sequence="100")
     public List<YodoPerson> findYodoPersons(final String lastname) {
