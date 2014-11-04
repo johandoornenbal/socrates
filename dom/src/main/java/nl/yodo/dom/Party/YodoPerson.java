@@ -1,5 +1,7 @@
 package nl.yodo.dom.Party;
 
+import java.util.List;
+
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.DomainObjectContainer;
@@ -7,9 +9,14 @@ import org.apache.isis.applib.annotation.AutoComplete;
 import org.apache.isis.applib.annotation.Hidden;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.MultiLine;
+import org.apache.isis.applib.annotation.Named;
+import org.apache.isis.applib.annotation.Render;
+import org.apache.isis.applib.annotation.Render.Type;
 import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.query.QueryDefault;
 
 import nl.yodo.dom.TrustLevel;
+import nl.yodo.dom.pruts.Secobject;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -127,6 +134,20 @@ public class YodoPerson extends YodoParty {
     public boolean hideNotForAllEyes() {
         return super.allowedTrustLevel(TrustLevel.INNER_CIRCLE);
     }
+    
+    // SecObjects test 
+    
+    @Render(Type.EAGERLY)
+    @Named("Test met 'veilige' objecten")
+    public List<Secobject> getMyObjects() {
+        QueryDefault<Secobject> query =
+                QueryDefault.create(
+                        Secobject.class,
+                        "myObjects",
+                        "ownedBy", this.getOwnedBy());
+        return container.allMatches(query);
+    }
+    
     
     // TESTS /////////////////////////////////////////////////////    
     public void updating() {

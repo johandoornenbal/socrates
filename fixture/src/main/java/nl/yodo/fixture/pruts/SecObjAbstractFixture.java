@@ -13,9 +13,11 @@ public abstract class SecObjAbstractFixture extends FixtureScript {
     protected abstract void execute(ExecutionContext executionContext);
     
     protected Secobject createSecObject(
-            String name
+            String name,
+            String ownedBy,
+            ExecutionContext executionContext
             ) {
-        Secobject secobj = secobjects.newSecobject(name);
+        Secobject secobj = secobjects.newSecobject(name, ownedBy);
         return secobj;
     }
     

@@ -3,12 +3,21 @@ package nl.yodo.dom.pruts;
 import javax.jdo.annotations.InheritanceStrategy;
 
 import org.apache.isis.applib.annotation.Bookmarkable;
+import org.apache.isis.applib.annotation.Hidden;
+import org.apache.isis.applib.annotation.Where;
 
 import nl.yodo.dom.TrustLevel;
 import nl.yodo.dom.YodoSecureMutableObject;
 
 @javax.jdo.annotations.PersistenceCapable
 @javax.jdo.annotations.Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+@javax.jdo.annotations.Queries({
+    @javax.jdo.annotations.Query(
+            name = "myObjects", language = "JDOQL",
+            value = "SELECT "
+                    + "FROM nl.yodo.dom.pruts.Secobject "
+                    + "WHERE ownedBy == :ownedBy")
+    })
 @Bookmarkable
 public class Secobject extends YodoSecureMutableObject<Secobject> {
     
@@ -29,6 +38,7 @@ public class Secobject extends YodoSecureMutableObject<Secobject> {
     
     private String testLevelOuter;
     
+    @Hidden(where=Where.ALL_TABLES)
     @javax.jdo.annotations.Column(allowsNull = "true")
     public String getTestLevelOuter() {
         return testLevelOuter;
@@ -48,6 +58,7 @@ public class Secobject extends YodoSecureMutableObject<Secobject> {
     
     private String testLevelInstap;
     
+    @Hidden(where=Where.ALL_TABLES)
     @javax.jdo.annotations.Column(allowsNull = "true")
     public String getTestLevelInstap() {
         return testLevelInstap;
@@ -67,6 +78,7 @@ public class Secobject extends YodoSecureMutableObject<Secobject> {
     
     private String testLevelInner;
     
+    @Hidden(where=Where.ALL_TABLES)
     @javax.jdo.annotations.Column(allowsNull = "true")
     public String getTestLevelInner() {
         return testLevelInner;
@@ -87,6 +99,7 @@ public class Secobject extends YodoSecureMutableObject<Secobject> {
     
     private String testLevelIntimate;
     
+    @Hidden(where=Where.ALL_TABLES)
     @javax.jdo.annotations.Column(allowsNull = "true")
     public String getTestLevelIntimate() {
         return testLevelIntimate;

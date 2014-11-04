@@ -7,6 +7,7 @@ import nl.yodo.fixture.party.PersonForTest2;
 import nl.yodo.fixture.party.PersonForTest3;
 import nl.yodo.fixture.party.PersonForTest4;
 import nl.yodo.fixture.party.YodoPersonsTeardown;
+import nl.yodo.fixture.pruts.SecObjectsForTest;
 
 public class YodoPersonTestsFixture extends FixtureScript {
     
@@ -24,7 +25,7 @@ public class YodoPersonTestsFixture extends FixtureScript {
         executeChild(new PersonForTest2(), executionContext);
         executeChild(new PersonForTest3(), executionContext);
         executeChild(new PersonForTest4(), executionContext);
-
+        executeChild(new SecObjectsForTest(), executionContext);
     }
 
 }
