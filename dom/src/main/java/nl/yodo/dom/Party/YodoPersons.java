@@ -148,9 +148,7 @@ public class YodoPersons extends YodoDomainService<YodoPerson> {
                             YodoPerson.class, 
                             "findYodoPersonUnique", 
                             "ownedBy", e.getOwnedBy());
-            final Referral ref = new Referral();
-            ref.setReferrer(container.firstMatch(q));
-            ref.setTrustLevel(e.getLevel());
+            final Referral ref = new Referral(container.firstMatch(q), e.getLevel());
             tempList.add(ref);
         }
         return tempList;
